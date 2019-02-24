@@ -28,13 +28,14 @@ export default {
     text-align: left;
     h1 {
       margin: 0;
-      font-size: 48px;
+      font-size: 32px;
     }
     .title, .subtitle {
       max-width: 320px;
+      padding: 0 16px;
     }
     .title {
-      margin: 40px auto 20px;
+      margin: 20px auto 20px;
     }
     .subtitle {
       margin: 40px auto 40px;
@@ -42,6 +43,15 @@ export default {
     p {
       margin: 0;
       font-style: italic;
+    }
+    @media screen and (min-width: 425px) {
+      h1 {
+        margin: 0;
+        font-size: 48px;
+      }
+      .title {
+        margin-top: 40px;
+      }
     }
   }
 }
