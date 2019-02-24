@@ -1,3 +1,6 @@
 */dist
 */public
 */node_modules
+main/index.html
+main/manifest.json
+main/service-worker.js
