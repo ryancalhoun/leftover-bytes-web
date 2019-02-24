@@ -1,18 +1,48 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div class="header">
+      <div class="title">
+        <h1> Leftover Bytes </h1>
+      </div>
+      <div class="subtitle">
+        <p> There are many bytes out there on the web. </p>
+        <p> These are the leftovers. </p>
+      </div>
+    </div> 
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
 
 export default {
   name: 'home',
-  components: {
-    HelloWorld
-  }
 }
 </script>
+
+<style lang="scss">
+.home {
+  .header {
+    background-color: #4d4d4d;
+    color: white;
+    padding: 40px 0;
+    text-align: left;
+    h1 {
+      margin: 0;
+      font-size: 48px;
+    }
+    .title, .subtitle {
+      max-width: 320px;
+    }
+    .title {
+      margin: 40px auto 20px;
+    }
+    .subtitle {
+      margin: 40px auto 40px;
+    }
+    p {
+      margin: 0;
+      font-style: italic;
+    }
+  }
+}
+</style>
