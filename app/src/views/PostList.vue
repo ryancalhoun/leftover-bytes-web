@@ -23,7 +23,7 @@ export default {
     content.posts().then((response) => {
       response.results.forEach((r) => {
         const date = new Date(r.first_publication_date.replace("+0000", "Z"));
-        r.url = date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + r.uid;
+        r.url = "/posts/" + date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + r.uid;
         this.posts.push(r);
       });
     });
