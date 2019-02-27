@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
 import Post from './views/Post.vue'
+import PostList from './views/PostList.vue'
 
 Vue.use(Router)
 
@@ -14,9 +15,19 @@ export default new Router({
       component: Home
     },
     {
-      path: '/posts/:id/:title',
-      name: 'post',
+      path: '/posts/:year/:month/:uid',
+      name: 'post-by-uid',
       component: Post
+    },
+    {
+      path: '/posts/:id/*',
+      name: 'post-by-id',
+      component: Post
+    },
+    {
+      path: '/posts/',
+      name: 'post-list',
+      component: PostList
     }
   ]
 })

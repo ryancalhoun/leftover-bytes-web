@@ -8,8 +8,21 @@ class Content {
   async posts() {
     return await (await this.api).query("", { fetch: 'post.title, post.description' });
   }
-  async post(id) {
-    return await (await this.api).getByID(id);
+  async post(params) {
+    const api = await this.api;
+    if(params.id) {
+      return await api.query([
+        Prismic.Predicates.at('document.id', params.id)
+      ]);
+    } else if(params.uid) {
+      return await api.query([
+        Prismic.Predicates.at('document.type', 'post'),
+        Prismic.Predicates.year('document.first_publication_date', parseInt(params.year)),
+        Prismic.Predicates.month('document.first_publication_date', parseInt(params.month)),
+        Prismic.Predicates.at('my.post.uid', params.uid)
+      ]);
+    }
+      
   }
 }
 export default new Content();
