@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import App from './App.vue'
-import content from './Content'
 import router from './router'
 import './registerServiceWorker'
 
