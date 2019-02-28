@@ -1,38 +1,33 @@
 <template>
   <div class="Post">
     <div class="header">
-      <div class="title">
-        <h1> {{ title }} </h1>
-      </div>
-      <div class="description">
-        {{ description }}
-      </div>
+      <text-field v-bind:text="title"/>
     </div>
-    <div class="body">
-      Post
-      {{ body }}
-    </div>
+    <text-field v-bind:text="body"/>
   </div>
 </template>
 
 <script>
-import content from '../Content'
+import contentApi from '@/components/ContentApi'
+import TextField from '@/components/TextField'
 
 export default {
   name: 'post',
   data: function() {
     return {
-      title: '',
-      description: '',
-      body: ''
+      title: [],
+      description: [],
+      body: []
     }
   },
+  components: {
+    TextField
+  },
   mounted: function() {
-    content.post(this.$route.params).then((response) => {
+    contentApi.post(this.$route.params).then((response) => {
       const doc = response.results[0];
-      this.title = doc.data.title[0].text;
-      this.description = doc.data.description[0].text;
-      this.body = doc.data.body[0].text;
+      this.title = doc.data.title;
+      this.body = doc.data.body;
     });
   }
 }

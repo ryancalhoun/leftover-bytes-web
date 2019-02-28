@@ -1,7 +1,7 @@
 const baseurl = 'https://leftoverbytes.cdn.prismic.io/api/v2';
 const Prismic = require('prismic-javascript')
 
-class Content {
+class ContentApi {
   constructor() {
     this.api = Prismic.getApi(baseurl);
   }
@@ -25,4 +25,4 @@ class Content {
       
   }
 }
-export default new Content();
+export default new ContentApi();

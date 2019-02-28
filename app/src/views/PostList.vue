@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import content from '../Content'
+import contentApi from '@/components/ContentApi'
 
 export default {
   name: 'post-list',
@@ -20,7 +20,7 @@ export default {
     }
   },
   mounted: function() {
-    content.posts().then((response) => {
+    contentApi.posts().then((response) => {
       response.results.forEach((r) => {
         const date = new Date(r.first_publication_date.replace("+0000", "Z"));
         r.url = "/posts/" + date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + r.uid;
