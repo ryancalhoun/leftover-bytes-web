@@ -20,7 +20,7 @@ export default new Router({
       component: Post
     },
     {
-      path: '/posts/:id/*',
+      path: '/posts/:id/:uid',
       name: 'post-by-id',
       component: Post
     },

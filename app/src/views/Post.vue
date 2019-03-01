@@ -24,11 +24,33 @@ export default {
     TextField
   },
   mounted: function() {
-    contentApi.post(this.$route.params).then((response) => {
-      const doc = response.results[0];
-      this.title = doc.data.title;
-      this.body = doc.data.body;
-    });
+    this.load(this.$route);
+  },
+  watch: {
+    $route (to, from) {
+      this.load(to, from);
+    }
+  },
+  methods: {
+    load(to, from) {
+      if(from && from.params.id) {
+        return;
+      }
+
+      contentApi.post(to.params).then((response) => {
+        const doc = response.results[0];
+        this.title = doc.data.title;
+        this.body = doc.data.body;
+        if(to.params.id) {
+          this.replaceId(doc);
+        }
+      });
+    },
+    replaceId(doc) {
+	  const date = new Date(doc.first_publication_date.replace("+0000", "Z"));
+      const url = "/posts/" + date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + doc.uid;
+      this.$router.replace(url);
+    }
   }
 }
 </script>

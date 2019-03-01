@@ -2,6 +2,17 @@ export default {
   name: 'TextField',
   props: { text: Array },
   render: function(h) {
+    const innerTag = (type, data, child) => {
+      if(type == 'hyperlink') {
+        if(data.link_type == 'Web') {
+          return h('a', {attrs: {href: data.url, target: '_blank'}}, child);
+        } else if(data.link_type == 'Document') {
+          return h('router-link', {attrs: {to: '/posts/' + data.id + '/' + data.uid}}, child);
+        }
+      } else {
+        return h(type, child);
+      }
+    };
     const richText = (type, obj) => {
       const rendered = [];
       let last = 0;
@@ -9,9 +20,11 @@ export default {
         if(last < r.start) {
           rendered.push(obj.text.substring(last, r.start));
         }
-        let m = h(r.types[0], obj.text.substring(r.start, r.end + 1));
-        for(let i = 1; i < r.types.length; ++i) {
-          m = h(r.types[i], [m]);
+        const types = Object.keys(r.spans);
+
+        let m = innerTag(types[0], r.spans[types[0]].data, obj.text.substring(r.start, r.end + 1));
+        for(let i = 1; i < types.length; ++i) {
+          m = innerTag(types[i], r.spans[types[i]].data, [m]);
         }
         rendered.push(m);
         last = r.end + 1;
@@ -37,6 +50,7 @@ export default {
       heading5:      { e: 'h5',  r: richText },
       heading6:      { e: 'h6',  r: richText },
       paragraph:     { e: 'p',   r: richText },
+      preformatted:  { e: 'pre', r: richText },
       image:         { e: 'img', r: image },
       'list-item':   { e: 'ul',  r: list },
       'o-list-item': { e: 'ol',  r: list },
@@ -66,8 +80,8 @@ export default {
     getUniqeRanges(obj) {
       const spans = [];
       (obj.spans || []).forEach(s => {
-        spans.push({ type: s.type, index: s.start, end: false });
-        spans.push({ type: s.type, index: s.end, end: true });
+        spans.push({ span: s, index: s.start, end: false });
+        spans.push({ span: s, data: s.data, index: s.end, end: true });
       });
       spans.sort((a, b) => a.index != b.index ? a.index - b.index : a.end - b.end);
 
@@ -79,15 +93,15 @@ export default {
         const t = spans[i+1];
 
         if(s.end) {
-          delete types[s.type];
+          delete types[s.span.type];
         } else {
-          types[s.type] = true;
+          types[s.span.type] = s.span;
         }
 
         const n = s.index + (s.end ? 1 : 0);
         const m = t.index - (t.end ? 0 : 1);
         if(n < m) {
-          ranges.push({types: Object.keys(types), start: n, end: m});
+          ranges.push({spans: Object.assign(types), start: n, end: m});
         }
       }
 
