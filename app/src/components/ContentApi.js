@@ -6,21 +6,23 @@ class ContentApi {
     this.api = Prismic.getApi(baseurl);
   }
   async posts() {
-    return await (await this.api).query("", { fetch: 'post.title, post.description' });
+    return await (await this.api).query([
+        Prismic.Predicates.at('document.type', 'post'),
+    ], { fetch: 'post.title, post.description' });
   }
   async post(params) {
     const api = await this.api;
     if(params.id) {
       return await api.query([
         Prismic.Predicates.at('document.id', params.id)
-      ]);
+      ], {fetchLinks: ['author.name', 'author.photo']});
     } else if(params.uid) {
       return await api.query([
         Prismic.Predicates.at('document.type', 'post'),
         Prismic.Predicates.year('document.first_publication_date', parseInt(params.year)),
         Prismic.Predicates.month('document.first_publication_date', parseInt(params.month)),
         Prismic.Predicates.at('my.post.uid', params.uid)
-      ]);
+      ], {fetchLinks: ['author.name', 'author.photo']});
     }
       
   }

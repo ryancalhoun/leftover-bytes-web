@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
 import Post from './views/Post.vue'
-import PostList from './views/PostList.vue'
+import Archive from './views/Archive.vue'
 
 Vue.use(Router)
 
@@ -25,9 +25,13 @@ export default new Router({
       component: Post
     },
     {
-      path: '/posts/',
-      name: 'post-list',
-      component: PostList
+      path: '/archive',
+      name: 'archive',
+      component: Archive
+    },
+    {
+      path: '/posts',
+      redirect: { name: 'archive' }
     }
   ]
 })

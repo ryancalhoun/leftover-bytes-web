@@ -1,37 +1,70 @@
 <template>
   <div class="home">
-    <div class="header">
-      <div class="title">
-        <h1> Leftover Bytes </h1>
-      </div>
-      <div class="subtitle">
-        <p> There are many bytes out there on the web. </p>
-        <p> These are the leftovers. </p>
+    <div class="hero">
+      <div class="centering">
+        <div class="title">
+          <h1> Leftover Bytes </h1>
+        </div>
+        <div class="subtitle">
+          <p> There are many bytes out there on the web. </p>
+          <p> These are the leftovers. </p>
+        </div>
       </div>
     </div> 
+    <div class="content" ref="content">
+      <nav-header/>
+    </div>
+    </div>
   </div>
 </template>
 
 <script>
-
+import NavHeader from '@/components/NavHeader.vue'
 export default {
   name: 'home',
+  components: {
+    NavHeader
+  },
+  mounted: function() {
+    this.$on('menu-toggle', (open) => {
+      const y = this.$refs.content.getBoundingClientRect().y;
+      if(y > 0) {
+        window.scroll(0, this.$refs.content.offsetTop);
+      }
+    });
+  }
 }
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 .home {
-  .header {
+  position: relative;
+
+  &::v-deep {
+    .nav-header {
+      position: sticky;
+      top: 0;
+    }
+  }
+
+  .hero {
     background-color: #4d4d4d;
     color: white;
-    padding: 40px 0;
     text-align: left;
+    height: calc(100vh - 40px);
+    min-height: calc(320px - 40px);
+    padding: 40px 0;
     h1 {
       margin: 0;
       font-size: 32px;
     }
+    .centering {
+      position: relative;
+      top: calc(50% - 40px);
+      transform: translateY(-50%);
+    }
     .title, .subtitle {
-      max-width: 320px;
+      max-width: 420px;
       padding: 0 16px;
     }
     .title {
@@ -53,6 +86,9 @@ export default {
         margin-top: 40px;
       }
     }
+  }
+  .content {
+    min-height: 2000px;
   }
 }
 </style>
