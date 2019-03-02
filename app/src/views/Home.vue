@@ -11,8 +11,12 @@
         </div>
       </div>
     </div> 
-    <div class="content" ref="content">
+    <div id="content" class="content" ref="content">
       <nav-header/>
+
+      <div class="container">
+        <h1> Main Content Goes Here </h1>
+      </div>
     </div>
     </div>
   </div>
@@ -88,7 +92,11 @@ export default {
     }
   }
   .content {
-    min-height: 2000px;
+    min-height: 100vh;
+  }
+  .container {
+    max-width: 768px;
+    margin: 0 auto;
   }
 }
 </style>

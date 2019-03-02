@@ -1,7 +1,7 @@
 <template>
   <div class="nav-header">
     <div class="title">
-      Leftover Bytes
+      <router-link to="/"> Leftover Bytes </router-link>
     </div>
     <div class="toggle">
       <a href="#" v-on:click.prevent="toggle()">
@@ -10,12 +10,11 @@
     </div>
     <div class="menu" v-bind:class="{ open: menu }">
       <ul>
-        <li> <router-link to="/">Home</router-link> </li>
+        <li> <router-link to="/#content">Home</router-link> </li>
         <li> <router-link to="/about/">About</router-link> </li>
         <li> <router-link to="/archive/">Archive</router-link> </li>
         <li> <router-link to="/contact-us/">Contact Us</router-link> </li>
       </ul>
-    </div>
     </div>
   </div>
 </template>
@@ -86,8 +85,8 @@ $background: #af4213;
       display: block;
       position: absolute;
       top: 0;
-      left: 0;
-      width: 100%;
+      left: 300px;
+      width: calc(100% - 600px);
       height: $height;
     }
 
