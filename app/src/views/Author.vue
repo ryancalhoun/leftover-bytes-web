@@ -88,10 +88,13 @@ export default {
     }
   }
   .info {
-    width: calc(100% - 250px);
-    padding: 10px 0 0 32px;
     .name {
       margin: 0;
+    }
+    padding: 40px 0;
+    @media screen and (min-width: 768px) {
+      width: calc(100% - 250px);
+      padding: 10px 0 0 32px;
     }
   }
 }
