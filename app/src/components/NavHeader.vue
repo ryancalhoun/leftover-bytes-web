@@ -13,7 +13,7 @@
     <div class="menu" v-bind:class="{ open: menu }">
       <ul>
         <li> <router-link to="/#content">
-          <span v-on:click="gohome()"> Home </span>
+          <div v-on:click="gohome()"> Home </div>
         </router-link> </li>
         <li> <router-link to="/about/">About</router-link> </li>
         <li> <router-link to="/archive/">Archive</router-link> </li>
@@ -80,9 +80,18 @@ $background: #af4213;
   }
 
   ul {
-    max-width: 200px;
     list-style-type: none;
     display: block;
+    margin: 0;
+    padding: 4px 0;
+  }
+  li {
+    padding: 4px 0;
+    a {
+      padding: 4px 16px;
+      display: block;
+      width: 100%;
+    }
   }
 
   @media screen and (min-width: 768px) {

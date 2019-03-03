@@ -115,7 +115,7 @@ export default {
     padding: 10px 0;
     @media screen and (min-width: 425px) {
       min-height: calc(100vh);
-      padding: 0;
+      padding: 0 0 40px;
     }
   }
   .container {
