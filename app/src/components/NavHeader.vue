@@ -1,7 +1,9 @@
 <template>
   <div class="nav-header">
     <div class="title">
-      <router-link to="/"> Leftover Bytes </router-link>
+      <router-link to="/">
+        <span v-on:click="gohome()"> Leftover Bytes </span>
+      </router-link>
     </div>
     <div class="toggle">
       <a href="#" v-on:click.prevent="toggle()">
@@ -10,7 +12,9 @@
     </div>
     <div class="menu" v-bind:class="{ open: menu }">
       <ul>
-        <li> <router-link to="/#content">Home</router-link> </li>
+        <li> <router-link to="/#content">
+          <span v-on:click="gohome()"> Home </span>
+        </router-link> </li>
         <li> <router-link to="/about/">About</router-link> </li>
         <li> <router-link to="/archive/">Archive</router-link> </li>
         <li> <router-link to="/contact-us/">Contact Us</router-link> </li>
@@ -22,7 +26,7 @@
 <script>
 export default {
   name: 'NavHeader',
-  data: function() {
+  data() {
     return {
       menu: false
     }
@@ -31,6 +35,10 @@ export default {
     toggle() {
       this.menu = !this.menu;
       this.$parent.$emit('menu-toggle', this.menu);
+    },
+    gohome() {
+      this.menu = false;
+      this.$parent.$emit('menu-home');
     }
   }
 }

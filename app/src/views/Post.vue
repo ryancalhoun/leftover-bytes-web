@@ -33,7 +33,7 @@ import TextField from '@/components/TextField'
 
 export default {
   name: 'post',
-  data: function() {
+  data() {
     return {
       title: [],
       hero: {},
@@ -45,9 +45,9 @@ export default {
   },
   components: {
     NavHeader,
-    TextField
+    TextField,
   },
-  mounted: function() {
+  mounted() {
     this.load(this.$route);
   },
   watch: {

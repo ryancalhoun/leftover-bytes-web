@@ -5,10 +5,15 @@ class ContentApi {
   constructor() {
     this.api = Prismic.getApi(baseurl);
   }
+  async home() {
+    return await (await this.api).query([
+        Prismic.Predicates.at('document.type', 'home'),
+    ]);
+  }
   async posts() {
     return await (await this.api).query([
         Prismic.Predicates.at('document.type', 'post'),
-    ], { fetch: 'post.title, post.description' });
+    ], { fetch: 'post.title, post.description, post.hero' });
   }
   async post(params) {
     const api = await this.api;

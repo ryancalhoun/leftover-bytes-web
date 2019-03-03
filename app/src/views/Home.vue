@@ -15,45 +15,39 @@
       <nav-header/>
 
       <div class="container">
-        <h1> Main Content Goes Here </h1>
+        <div class="body">
+          <text-field v-bind:text="body"/>
+        </div>
       </div>
-    </div>
     </div>
   </div>
 </template>
 
 <script>
 import NavHeader from '@/components/NavHeader.vue'
+import contentApi from '@/components/ContentApi'
+import TextField from '@/components/TextField'
+
 export default {
   name: 'home',
-  components: {
-    NavHeader
-  },
-  mounted: function() {
-    this.$on('menu-toggle', (open) => {
-      const y = this.$refs.content.getBoundingClientRect().y;
-      if(y > 0) {
-        window.scroll(0, this.$refs.content.offsetTop);
-      }
-    });
-
-    window.addEventListener('resize', this.fitWindow);
-    window.addEventListener('orientationchange', this.fitWindow);
-
-    this.fitWindow();
-  },
-  methods: {
-    fitWindow() {
-      if(!this.$refs.hero) {
-        return;
-      }
-      const hero = this.$refs.hero.clientHeight;
-
-      if(hero + 40 != window.innerHeight) {
-        this.$refs.hero.style.height = (window.innerHeight - 40) + 'px';
-      }
+  data() {
+    return {
+      body: []
     }
-  }
+  },
+  components: {
+    NavHeader,
+    TextField,
+  },
+  mounted() {
+    this.$on('menu-home', () => {
+      window.scroll(0, this.$refs.content.offsetTop);
+    });
+    contentApi.home().then((response) => {
+      const doc = response.results[0];
+      this.body = doc.data.body;
+    });
+  },
 }
 </script>
 
@@ -63,8 +57,12 @@ export default {
 
   &::v-deep {
     .nav-header {
-      position: sticky;
+      position: fixed;
       top: 0;
+
+      @media screen and (min-width: 768px) {
+        position: sticky;
+      }
     }
   }
 
@@ -75,6 +73,10 @@ export default {
     height: calc(100vh - 40px);
     min-height: calc(320px - 40px);
     padding: 40px 0;
+    margin-top: 40px;
+    @media screen and (min-width: 768px) {
+      margin-top: 0;
+    }
     h1 {
       margin: 0;
       font-size: 32px;
@@ -109,11 +111,17 @@ export default {
     }
   }
   .content {
-    min-height: 100vh;
+    min-height: calc(100vh - 40px);
+    padding: 10px 0;
+    @media screen and (min-width: 425px) {
+      min-height: calc(100vh);
+      padding: 0;
+    }
   }
   .container {
     max-width: 768px;
     margin: 0 auto;
+    padding: 0 16px;
   }
 }
 </style>
