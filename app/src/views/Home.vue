@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <div class="hero">
+    <div class="hero" ref="hero">
       <div class="centering">
         <div class="title">
           <h1> Leftover Bytes </h1>
@@ -36,6 +36,23 @@ export default {
         window.scroll(0, this.$refs.content.offsetTop);
       }
     });
+
+    window.addEventListener('resize', this.fitWindow);
+    window.addEventListener('orientationchange', this.fitWindow);
+
+    this.fitWindow();
+  },
+  methods: {
+    fitWindow() {
+      if(!this.$refs.hero) {
+        return;
+      }
+      const hero = this.$refs.hero.clientHeight;
+
+      if(hero + 40 != window.innerHeight) {
+        this.$refs.hero.style.height = (window.innerHeight - 40) + 'px';
+      }
+    }
   }
 }
 </script>

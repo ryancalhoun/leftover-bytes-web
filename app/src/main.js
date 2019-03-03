@@ -20,5 +20,5 @@ new Vue({
     router.afterEach((to, from) => {
       tracking.update(to.path);
     });
-  }
+  },
 }).$mount('#app')
