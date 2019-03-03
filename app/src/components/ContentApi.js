@@ -31,5 +31,11 @@ class ContentApi {
     }
       
   }
+  async author(params) {
+    return await (await this.api).query([
+        Prismic.Predicates.at('document.type', 'author'),
+        Prismic.Predicates.at('my.author.uid', params.uid)
+    ]);
+  }
 }
 export default new ContentApi();

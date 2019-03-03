@@ -1,8 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
+import About from './views/About.vue'
+import Contact from './views/Contact.vue'
 import Post from './views/Post.vue'
 import Archive from './views/Archive.vue'
+import Author from './views/Author.vue'
 
 Vue.use(Router)
 
@@ -22,6 +25,16 @@ export default new Router({
       component: Home
     },
     {
+      path: '/about',
+      name: 'about',
+      component: About
+    },
+    {
+      path: '/contact',
+      name: 'contact',
+      component: Contact
+    },
+    {
       path: '/posts/:year/:month/:uid',
       name: 'post-by-uid',
       component: Post
@@ -39,6 +52,11 @@ export default new Router({
     {
       path: '/posts',
       redirect: { name: 'archive' }
+    },
+    {
+      path: '/authors/:uid',
+      name: 'author',
+      component: Author
     },
     {
       path: '/*',

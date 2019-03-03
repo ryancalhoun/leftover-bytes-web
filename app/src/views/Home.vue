@@ -119,9 +119,9 @@ export default {
     }
   }
   .container {
-    max-width: 768px;
+    max-width: 720px;
     margin: 0 auto;
-    padding: 0 16px;
+    padding: 40px 16px;
   }
 }
 </style>

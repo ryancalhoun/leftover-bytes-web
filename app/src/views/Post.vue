@@ -5,11 +5,15 @@
       <text-field v-bind:text="title"/>
       <div class="author">
         <div class="photo">
-          <img v-bind:src="author.photo"/>
+          <router-link v-bind:to="author_url">
+            <img v-bind:src="author.photo"/>
+          </router-link>
         </div>
         <div class="info">
           <div class="name">
-            {{ author.name }}
+            <router-link v-bind:to="author_url">
+              {{ author.name }}
+            </router-link>
           </div>
           <div class="date">
             {{ date }}
@@ -32,12 +36,13 @@ import contentApi from '@/components/ContentApi'
 import TextField from '@/components/TextField'
 
 export default {
-  name: 'post',
+  name: 'Post',
   data() {
     return {
       title: [],
       hero: {},
       author: {},
+      author_url: '',
       date: '',
       description: [],
       body: []
@@ -68,6 +73,7 @@ export default {
           name: doc.data.author.data.name,
           photo: doc.data.author.data.photo.url,
         };
+        this.author_url = '/authors/' + doc.data.author.uid;
         this.date = new Intl.DateTimeFormat('en-US', {year: 'numeric', month: 'long', day: 'numeric'}).format(new Date(doc.first_publication_date));
         this.hero = doc.data.hero;
         this.body = doc.data.body;
@@ -109,7 +115,7 @@ export default {
     width: 54px;
     height: 54px;
     border-radius: 50%;
-    border: 1px solid blue;
+    border: 1px solid #af4213;
   }
   img {
     width: 100%;
@@ -127,6 +133,10 @@ export default {
     .date {
       font-size: 14px;
     }
+  }
+  a {
+    color: #444;
+    text-decoration: underline;
   }
 }
 .hero {
