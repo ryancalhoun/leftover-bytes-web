@@ -108,7 +108,7 @@ $background: #af4213;
     }
 
     li {
-      &, a {
+      &, a, a > * {
         padding: 0;
         display: inline;
       }
