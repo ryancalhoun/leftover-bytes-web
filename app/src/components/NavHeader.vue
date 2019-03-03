@@ -108,9 +108,14 @@ $background: #af4213;
     }
 
     li {
-      display: inline;
+      &, a {
+        padding: 0;
+        display: inline;
+      }
     }
     ul {
+      display: block;
+      padding: 0;
       max-width: 300px;
       margin: 0 auto;
     }
