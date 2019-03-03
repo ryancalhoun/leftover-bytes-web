@@ -29,7 +29,12 @@ class ContentApi {
         Prismic.Predicates.at('my.post.uid', params.uid)
       ], {fetchLinks: ['author.name', 'author.photo']});
     }
-      
+  }
+  async info(params) {
+    return await (await this.api).query([
+        Prismic.Predicates.at('document.type', 'info'),
+        Prismic.Predicates.at('my.info.uid', params.uid)
+    ]);
   }
   async author(params) {
     return await (await this.api).query([

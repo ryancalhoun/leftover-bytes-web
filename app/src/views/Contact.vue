@@ -1,12 +1,7 @@
 <template>
-  <div class="about">
+  <div class="contact">
     <nav-header/>
-    <div class="title">
-      <text-field v-bind:text="title"/>
-    </div>
-    <div class="body">
-      <text-field v-bind:text="body"/>
-    </div>
+    <h1>This is a contact page</h1>
   </div>
 </template>
 
@@ -16,30 +11,17 @@ import contentApi from '@/components/ContentApi'
 import TextField from '@/components/TextField'
 
 export default {
-  name: 'About',
-  data() {
-    return {
-      title: [],
-      body: [],
-    }
-  },
+  name: 'Contact',
   components: {
     NavHeader,
     TextField,
-  },
-  mounted() {
-    contentApi.info({uid: 'about'}).then((response) => {
-      const doc = response.results[0];
-      this.title = doc.data.title;
-      this.body = doc.data.body;
-    });
   }
 }
 </script>
 
 
 <style scoped lang="scss">
-.about {
+.contact {
   max-width: 720px;
   margin: 0 auto;
   padding: 80px 16px;
