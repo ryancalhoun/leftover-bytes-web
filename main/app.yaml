@@ -1,5 +1,8 @@
 runtime: nodejs10
 handlers:
+- url: /robots\.txt
+  upload: robots\.txt
+  static_files: robots.txt
 - url: /manifest\.json
   upload: manifest\.json
   static_files: manifest.json
