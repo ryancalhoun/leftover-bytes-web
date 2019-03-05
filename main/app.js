@@ -56,7 +56,7 @@ app.get('/sitemap.xml', (req, res) => {
         children.push({
           tag: 'url', children: [
             {tag: 'loc', children: 'https://leftoverbytes.com' + path},
-            {tag: 'lastmod', children: post.last_publication_date},
+            {tag: 'lastmod', children: post.last_publication_date.replace("+0000", "+00:00")},
           ]
         });
       });
