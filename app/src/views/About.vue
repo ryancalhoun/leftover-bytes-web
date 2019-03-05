@@ -10,7 +10,7 @@
       <div class="authors">
         <h4> Authors </h4>
 
-        <div class="author" v-for="author in authors">
+        <div class="author" v-for="author in authors" v-bind:key="author.id">
           <div class="photo">
             <router-link v-bind:to="author.url">
               <img v-bind:src="author.data.photo.url"/>

@@ -1,5 +1,6 @@
 */dist
 */node_modules
+**/*.swp
 main/index.html
 main/manifest.json
 main/robots.txt

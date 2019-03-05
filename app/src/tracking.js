@@ -6,12 +6,12 @@ class Tracking {
     document.head.appendChild(ga);
 
     window.dataLayer = window.dataLayer || [];
-    window.gtag = function(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'UA-89944251-4');
+    window.gtag = function(){window.dataLayer.push(arguments);}
+    window.gtag('js', new Date());
+    window.gtag('config', 'UA-89944251-4');
   }
   update(path) {
-    gtag('config', 'UA-89944251-4', {page_path: path});
+    window.gtag('config', 'UA-89944251-4', {page_path: path});
   }
 }
 

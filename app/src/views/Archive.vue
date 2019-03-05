@@ -4,7 +4,7 @@
     <h1>
       Archive
     </h1>
-    <div class="post" v-for="post in posts">
+    <div class="post" v-for="post in posts" v-bind:key="post.id">
       <router-link :to="post.url">
         <div class="thumbnail">
           <img v-bind:src="post.thumbnail"/>

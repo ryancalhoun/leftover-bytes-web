@@ -83,7 +83,7 @@ export default {
       });
     },
     replaceId(doc) {
-	  const date = new Date(doc.first_publication_date.replace("+0000", "Z"));
+      const date = new Date(doc.first_publication_date.replace("+0000", "Z"));
       const url = "/posts/" + date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + doc.uid;
       this.$router.replace(url);
     }
