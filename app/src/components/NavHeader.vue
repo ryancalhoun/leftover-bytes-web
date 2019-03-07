@@ -48,6 +48,11 @@ export default {
 $height: 40px;
 $background: #af4213;
 .nav-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+
   height: $height;
   width: 100%; 
   background: $background;
@@ -55,7 +60,6 @@ $background: #af4213;
   padding: 0 16px;
   box-sizing: border-box;
   line-height: 40px;
-  position: relative;
 
   @media screen and (min-width: 768px) {
     padding: 0 40px;

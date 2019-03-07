@@ -3,23 +3,12 @@
     <nav-header/>
     <div class="title">
       <text-field v-bind:text="title"/>
-      <div class="author">
-        <div class="photo">
-          <router-link v-bind:to="author_url">
-            <img v-bind:src="author.photo"/>
-          </router-link>
+	  <text-field v-bind:text="description"/>
+      <author-credit v-bind:author="author">
+        <div class="date">
+          {{ date }}
         </div>
-        <div class="info">
-          <div class="name">
-            <router-link v-bind:to="author_url">
-              {{ author.name }}
-            </router-link>
-          </div>
-          <div class="date">
-            {{ date }}
-          </div>
-        </div>
-      </div>
+      </author-credit>
     </div>
     <div class="hero">
       <img v-bind:src="hero.url"/>
@@ -32,6 +21,7 @@
 
 <script>
 import NavHeader from '@/components/NavHeader.vue'
+import AuthorCredit from '@/components/AuthorCredit.vue'
 import contentApi from '@/components/ContentApi'
 import TextField from '@/components/TextField'
 
@@ -42,7 +32,6 @@ export default {
       title: [],
       hero: {},
       author: {},
-      author_url: '',
       date: '',
       description: [],
       body: []
@@ -50,6 +39,7 @@ export default {
   },
   components: {
     NavHeader,
+    AuthorCredit,
     TextField,
   },
   mounted() {
@@ -69,11 +59,8 @@ export default {
       contentApi.post(to.params).then((response) => {
         const doc = response.results[0];
         this.title = doc.data.title;
-        this.author = {
-          name: doc.data.author.data.name,
-          photo: doc.data.author.data.photo.url,
-        };
-        this.author_url = '/authors/' + doc.data.author.uid;
+        this.description = doc.data.description;
+        this.author = doc.data.author;
         this.date = new Intl.DateTimeFormat('en-US', {year: 'numeric', month: 'long', day: 'numeric'}).format(new Date(doc.first_publication_date));
         this.hero = doc.data.hero;
         this.body = doc.data.body;
@@ -96,48 +83,6 @@ export default {
   max-width: 720px;
   margin: 0 auto;
   padding: 40px 16px;
-
-  &::v-deep {
-    .nav-header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 1;
-    }
-  }
-}
-.author {
-  .info, .photo {
-    display: inline-block;
-    vertical-align: top;
-  }
-  .photo {
-    width: 54px;
-    height: 54px;
-    border-radius: 50%;
-    border: 1px solid #af4213;
-  }
-  img {
-    width: 100%;
-    height: 100%;
-    padding: 2px;
-    border-radius: 50%;
-    position: relative;
-  }
-  .info {
-    padding: 4px 20px;
-    .name {
-      font-size: 18px;
-      margin-bottom: 4px;
-    }
-    .date {
-      font-size: 14px;
-    }
-  }
-  a {
-    color: #444;
-    text-decoration: underline;
-  }
 }
 .hero {
   margin: 40px 0;

@@ -51,15 +51,6 @@ export default {
   margin: 0 auto;
   padding: 80px 16px;
 
-  &::v-deep {
-    .nav-header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 1;
-    }
-  }
-
   .post {
     margin: 12px 0;
 

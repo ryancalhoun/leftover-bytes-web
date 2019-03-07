@@ -10,20 +10,8 @@
       <div class="authors">
         <h4> Authors </h4>
 
-        <div class="author" v-for="author in authors" v-bind:key="author.id">
-          <div class="photo">
-            <router-link v-bind:to="author.url">
-              <img v-bind:src="author.data.photo.url"/>
-            </router-link>
-          </div>
-          <div class="info">
-            <div class="name">
-              <router-link v-bind:to="author.url">
-                {{ author.data.name }}
-              </router-link>
-            </div>
-          </div>
-        </div>
+        <author-credit v-for="author in authors" v-bind:key="author.id" v-bind:author="author">
+        </author-credit>
       </div>
     </div>
   </div>
@@ -31,6 +19,7 @@
 
 <script>
 import NavHeader from '@/components/NavHeader.vue'
+import AuthorCredit from '@/components/AuthorCredit.vue'
 import contentApi from '@/components/ContentApi'
 import TextField from '@/components/TextField'
 
@@ -45,6 +34,7 @@ export default {
   },
   components: {
     NavHeader,
+    AuthorCredit,
     TextField,
   },
   mounted() {
@@ -52,11 +42,7 @@ export default {
       const doc = response.results[0];
       this.title = doc.data.title;
       this.body = doc.data.body;
-      this.authors = doc.data.collection.map((c) => {
-        let a = c.item;
-        a.url = '/authors/' + a.uid;
-        return a;
-      });
+      this.authors = doc.data.collection.map(c => c.item);
     });
   }
 }
@@ -68,50 +54,8 @@ export default {
   max-width: 720px;
   margin: 0 auto;
   padding: 80px 16px;
-
-  &::v-deep {
-    .nav-header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 1;
-    }
-  }
 }
 .authors {
   margin-top: 80px;
-}
-.author {
-  .info, .photo {
-    display: inline-block;
-    vertical-align: top;
-  }
-  .photo {
-    width: 54px;
-    height: 54px;
-    border-radius: 50%;
-    border: 1px solid #af4213;
-  }
-  img {
-    width: 100%;
-    height: 100%;
-    padding: 2px;
-    border-radius: 50%;
-    position: relative;
-  }
-  .info {
-    padding: 4px 20px;
-    .name {
-      font-size: 18px;
-      margin-bottom: 4px;
-    }
-    .date {
-      font-size: 14px;
-    }
-  }
-  a {
-    color: #444;
-    text-decoration: underline;
-  }
 }
 </style>
