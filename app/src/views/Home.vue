@@ -13,19 +13,20 @@
     </div> 
     <div id="content" class="content" ref="content">
       <nav-header/>
-
-      <div class="container">
-        <div class="body">
-          <text-field v-bind:text="body"/>
+      <document-pane type="home" v-slot="doc">
+        <div class="container">
+          <div class="body">
+            <text-field v-bind:text="doc.results[0].data.body"/>
+          </div>
         </div>
-      </div>
+      </document-pane>
     </div>
   </div>
 </template>
 
 <script>
 import NavHeader from '@/components/NavHeader.vue'
-import contentApi from '@/components/ContentApi'
+import DocumentPane from '@/components/DocumentPane.vue'
 import TextField from '@/components/TextField'
 
 export default {
@@ -37,15 +38,12 @@ export default {
   },
   components: {
     NavHeader,
+    DocumentPane,
     TextField,
   },
   mounted() {
     this.$on('menu-home', () => {
       window.scroll(0, this.$refs.content.offsetTop);
-    });
-    contentApi.home().then((response) => {
-      const doc = response.results[0];
-      this.body = doc.data.body;
     });
   },
 }

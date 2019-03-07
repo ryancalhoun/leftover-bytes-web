@@ -1,7 +1,7 @@
 <template>
   <div class="about">
+    <nav-header/>
     <document-pane type="info" uid="about" v-bind:fetchLinks="fetchLinks" v-slot="doc">
-      <nav-header/>
       <div class="title">
         <text-field v-bind:text="doc.results[0].data.title"/>
       </div>

@@ -1,78 +1,53 @@
 <template>
   <div class="post">
     <nav-header/>
-    <div class="title">
-      <text-field v-bind:text="title"/>
-	  <text-field v-bind:text="description"/>
-      <author-credit v-bind:author="author">
-        <div class="date">
-          {{ date }}
-        </div>
-      </author-credit>
-    </div>
-    <div class="hero">
-      <img v-bind:src="hero.url"/>
-    </div>
-    <div class="body">
-      <text-field v-bind:text="body"/>
-    </div>
+    <document-pane type="post" v-bind:id="$route.params.id" v-bind:uid="$route.params.uid" v-bind:year="$route.params.year" v-bind:month="$route.params.month" v-bind:fetchLinks="fetchLinks" v-slot="doc">
+      <div class="title">
+        <text-field v-bind:text="doc.results[0].data.title"/>
+        <text-field v-bind:text="doc.results[0].data.description"/>
+        <author-credit v-bind:author="doc.results[0].data.author">
+          <div class="date">
+            {{ prettyDate(doc.results[0].first_publication_date) }}
+          </div>
+        </author-credit>
+      </div>
+      <div class="hero">
+        <img v-bind:src="doc.results[0].data.hero.url"/>
+      </div>
+      <div class="body">
+        <text-field v-bind:text="doc.results[0].data.body"/>
+      </div>
+    </document-pane>
   </div>
 </template>
 
 <script>
 import NavHeader from '@/components/NavHeader.vue'
+import DocumentPane from '@/components/DocumentPane.vue'
 import AuthorCredit from '@/components/AuthorCredit.vue'
-import contentApi from '@/components/ContentApi'
 import TextField from '@/components/TextField'
 
 export default {
   name: 'Post',
   data() {
     return {
-      title: [],
-      hero: {},
-      author: {},
-      date: '',
-      description: [],
-      body: []
+      fetchLinks: ['author.name', 'author.photo']
     }
   },
   components: {
     NavHeader,
+    DocumentPane,
     AuthorCredit,
     TextField,
-  },
-  mounted() {
-    this.load(this.$route);
-  },
-  watch: {
-    $route (to, from) {
-      this.load(to, from);
-    }
   },
   methods: {
     load(to, from) {
       if(from && from.params.id) {
         return;
       }
-
-      contentApi.post(to.params).then((response) => {
-        const doc = response.results[0];
-        this.title = doc.data.title;
-        this.description = doc.data.description;
-        this.author = doc.data.author;
-        this.date = new Intl.DateTimeFormat('en-US', {year: 'numeric', month: 'long', day: 'numeric'}).format(new Date(doc.first_publication_date));
-        this.hero = doc.data.hero;
-        this.body = doc.data.body;
-        if(to.params.id) {
-          this.replaceId(doc);
-        }
-      });
     },
-    replaceId(doc) {
-      const date = new Date(doc.first_publication_date.replace("+0000", "Z"));
-      const url = "/posts/" + date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + doc.uid;
-      this.$router.replace(url);
+    prettyDate(date) {
+      return new Intl.DateTimeFormat('en-US', {year: 'numeric', month: 'long', day: 'numeric'}).format(new Date(date));
     }
   }
 }

@@ -1,62 +1,36 @@
 <template>
   <div class="author">
     <nav-header/>
-    <div class="author">
-      <div class="photo">
-        <img v-bind:src="photo.url"/>
-      </div>
-      <div class="info">
-        <h2 class="name">
-          {{ name }}
-        </h2>
-        <div class="bio">
-          <text-field v-bind:text="bio"/>
+    <document-pane type="author" v-bind:uid="$route.params.uid" v-slot="doc">
+      <div class="author">
+        <div class="photo">
+          <img v-bind:src="doc.results[0].data.photo.url"/>
+        </div>
+        <div class="info">
+          <h2 class="name">
+            {{ doc.results[0].data.name }}
+          </h2>
+          <div class="bio">
+            <text-field v-bind:text="doc.results[0].data.bio"/>
+          </div>
         </div>
       </div>
-    </div>
+    </document-pane>
   </div>
 </template>
 
 <script>
 import NavHeader from '@/components/NavHeader.vue'
-import contentApi from '@/components/ContentApi'
+import DocumentPane from '@/components/DocumentPane.vue'
 import TextField from '@/components/TextField'
 
 export default {
   name: 'Author',
-  data() {
-    return {
-      name: '',
-      photo: {},
-      bio: [],
-    }
-  },
   components: {
     NavHeader,
+    DocumentPane,
     TextField,
   },
-  mounted() {
-    this.load(this.$route);
-  },
-  watch: {
-    $route (to, from) {
-      this.load(to, from);
-    }
-  },
-  methods: {
-    load(to, from) {
-      if(from && from.params.id) {
-        return;
-      }
-
-      contentApi.author(to.params).then((response) => {
-        const doc = response.results[0];
-        this.name = doc.data.name;
-        this.photo = doc.data.photo;
-        this.bio = doc.data.bio;
-      });
-    }
-  }
 }
 </script>
 
