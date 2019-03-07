@@ -49,7 +49,10 @@ export default {
         q.push(Prismic.Predicates.month('document.first_publication_date', parseInt(this.month)));
 
       api.then(api =>
-        api.query(q, opts).then(response => this.results = response.results)
+        api.query(q, opts).then(response => {
+          this.results = response.results;
+          this.$emit('document-loaded', this.results);
+        })
       );
     }
   }

@@ -1,7 +1,15 @@
 <template>
   <div class="post">
     <nav-header/>
-    <document-pane type="post" v-bind:id="$route.params.id" v-bind:uid="$route.params.uid" v-bind:year="$route.params.year" v-bind:month="$route.params.month" v-bind:fetchLinks="fetchLinks" v-slot="doc">
+    <document-pane
+      type="post"
+      v-bind:id="$route.params.id"
+      v-bind:uid="$route.params.uid"
+      v-bind:year="$route.params.year"
+      v-bind:month="$route.params.month"
+      v-bind:fetchLinks="fetchLinks"
+      v-on:document-loaded="onLoaded"
+      v-slot="doc">
       <div class="title">
         <text-field v-bind:text="doc.results[0].data.title"/>
         <text-field v-bind:text="doc.results[0].data.description"/>
@@ -41,13 +49,16 @@ export default {
     TextField,
   },
   methods: {
-    load(to, from) {
-      if(from && from.params.id) {
-        return;
-      }
-    },
     prettyDate(date) {
       return new Intl.DateTimeFormat('en-US', {year: 'numeric', month: 'long', day: 'numeric'}).format(new Date(date));
+    },
+    onLoaded(results) {
+      const post = results[0];
+      if(post.first_publication_date) {
+        const date = new Date(post.first_publication_date.replace("+0000", "Z"));
+        const url = "/posts/" + date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + post.uid;
+        this.$router.replace(url);
+      }
     }
   }
 }

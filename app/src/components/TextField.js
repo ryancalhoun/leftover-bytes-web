@@ -2,17 +2,6 @@ export default {
   name: 'TextField',
   props: { text: Array },
   render: function(h) {
-    const innerTag = (type, data, child) => {
-      if(type == 'hyperlink') {
-        if(data.link_type == 'Web') {
-          return h('a', {attrs: {href: data.url, target: '_blank'}}, child);
-        } else if(data.link_type == 'Document') {
-          return h('router-link', {attrs: {to: '/posts/' + data.id + '/' + data.uid}}, child);
-        }
-      } else {
-        return h(type, child);
-      }
-    };
     const richText = (type, obj) => {
       const rendered = [];
       let last = 0;
@@ -22,11 +11,10 @@ export default {
         }
         const types = Object.keys(r.spans);
 
-        let m = innerTag(types[0], r.spans[types[0]].data, obj.text.substring(r.start, r.end + 1));
-        for(let i = 1; i < types.length; ++i) {
-          m = innerTag(types[i], r.spans[types[i]].data, [m]);
-        }
+        let m = obj.text.substring(r.start, r.end + 1);
+        types.forEach(t => m = h(t, {props: r.spans[t].data}, [m]));
         rendered.push(m);
+
         last = r.end + 1;
       });
       if(last < obj.text.length) {
@@ -75,6 +63,21 @@ export default {
       const type = types[t.type];
       return type && type.r(type.e, t);
     }));
+  },
+  components: {
+    hyperlink: {
+      props: { link_type: String, id: String, uid: String, url: String },
+      render(h) {
+        const children = this.$slots.default;
+        if(this.link_type == 'Web') {
+          const attrs = { href: this.url, target: '_blank', };
+          return h('a', {attrs: attrs}, children);
+        } else if(this.link_type == 'Document') {
+          const attrs = { to: '/posts/' + this.id + '/' + this.uid, };
+          return h('router-link', {attrs: attrs}, children);
+        }
+      }
+    }
   },
   methods: {
     getUniqeRanges(obj) {
