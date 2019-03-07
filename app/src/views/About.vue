@@ -1,50 +1,43 @@
 <template>
   <div class="about">
-    <nav-header/>
-    <div class="title">
-      <text-field v-bind:text="title"/>
-    </div>
-    <div class="body">
-      <text-field v-bind:text="body"/>
-
-      <div class="authors">
-        <h4> Authors </h4>
-
-        <author-credit v-for="author in authors" v-bind:key="author.id" v-bind:author="author">
-        </author-credit>
+    <document-pane type="info" uid="about" v-bind:fetchLinks="fetchLinks" v-slot="doc">
+      <nav-header/>
+      <div class="title">
+        <text-field v-bind:text="doc.results[0].data.title"/>
       </div>
-    </div>
+      <div class="body">
+        <text-field v-bind:text="doc.results[0].data.body"/>
+  
+        <div class="authors">
+          <h4> Authors </h4>
+  
+          <author-credit v-for="author in doc.results[0].data.collection" v-bind:key="author.item.id" v-bind:author="author.item">
+          </author-credit>
+        </div>
+      </div>
+    </document-pane>
   </div>
 </template>
 
 <script>
 import NavHeader from '@/components/NavHeader.vue'
+import DocumentPane from '@/components/DocumentPane.vue'
 import AuthorCredit from '@/components/AuthorCredit.vue'
-import contentApi from '@/components/ContentApi'
 import TextField from '@/components/TextField'
 
 export default {
   name: 'About',
   data() {
     return {
-      title: [],
-      body: [],
-      authors: [],
+      fetchLinks: ['author.name', 'author.photo']
     }
   },
   components: {
     NavHeader,
+    DocumentPane,
     AuthorCredit,
     TextField,
   },
-  mounted() {
-    contentApi.info({uid: 'about'}, ['author.name', 'author.photo']).then((response) => {
-      const doc = response.results[0];
-      this.title = doc.data.title;
-      this.body = doc.data.body;
-      this.authors = doc.data.collection.map(c => c.item);
-    });
-  }
 }
 </script>
 

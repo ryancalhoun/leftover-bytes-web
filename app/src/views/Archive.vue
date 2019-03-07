@@ -1,46 +1,40 @@
 <template>
   <div class="archive">
-    <nav-header/>
-    <h1>
-      Archive
-    </h1>
-    <div class="post" v-for="post in posts" v-bind:key="post.id">
-      <router-link :to="post.url">
-        <div class="thumbnail">
-          <img v-bind:src="post.thumbnail"/>
-        </div>
-        <div class="info">
-          <div class="title"> {{ post.data.title[0].text }} </div>
-          <div class="description"> {{ post.data.description[0].text }} </div>
-        </div>
-      </router-link>
-    </div>
+    <document-pane type="post" fetch="post.title, post.description, post.hero" v-slot="doc">
+      <nav-header/>
+      <h1>
+        Archive
+      </h1>
+      <div class="post" v-for="post in doc.results" v-bind:key="post.id">
+        <router-link :to="url(post)">
+          <div class="thumbnail">
+            <img v-bind:src="post.data.hero.thumbnail.url"/>
+          </div>
+          <div class="info">
+            <div class="title"> {{ post.data.title[0].text }} </div>
+            <div class="description"> {{ post.data.description[0].text }} </div>
+          </div>
+        </router-link>
+      </div>
+    </document-pane>
   </div>
 </template>
 
 <script>
-import contentApi from '@/components/ContentApi'
 import NavHeader from '@/components/NavHeader.vue'
+import DocumentPane from '@/components/DocumentPane.vue'
 
 export default {
   name: 'archive',
   components: {
-    NavHeader
+    NavHeader,
+    DocumentPane,
   },
-  data: function() {
-    return {
-      posts: []
+  methods: {
+    url(post) {
+      const date = new Date(post.first_publication_date.replace("+0000", "Z"));
+      return "/posts/" + date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + post.uid;
     }
-  },
-  mounted: function() {
-    contentApi.posts().then((response) => {
-      response.results.forEach((r) => {
-        const date = new Date(r.first_publication_date.replace("+0000", "Z"));
-        r.url = "/posts/" + date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + r.uid;
-        r.thumbnail = r.data.hero.thumbnail.url;
-        this.posts.push(r);
-      });
-    });
   }
 };
 </script>
