@@ -12,7 +12,7 @@ let api = Prismic.getApi(baseurl);
 
 export default {
   name: 'DocumentPane',
-  props: ['type', 'id', 'uid', 'year', 'month', 'fetch', 'fetchLinks'],
+  props: ['type', 'id', 'uid', 'year', 'month', 'orderings', 'fetch', 'fetchLinks'],
   data() {
     return {
       results: [],
@@ -35,6 +35,8 @@ export default {
         opts.fetch = this.fetch;
       if(this.fetchLinks)
         opts.fetchLinks = this.fetchLinks;
+      if(this.orderings)
+        opts.orderings = this.orderings;
       if(this.id) {
         q.push(Prismic.Predicates.at('document.id', this.id));
       }
@@ -60,4 +62,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.document-pane {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 100px 16px;
+}
 </style>

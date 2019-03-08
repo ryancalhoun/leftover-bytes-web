@@ -36,10 +36,6 @@ export default {
 
 <style scoped lang="scss">
 .author {
-  max-width: 720px;
-  margin: 0 auto;
-  padding: 40px 16px;
-
   &::v-deep {
     .nav-header {
       position: fixed;

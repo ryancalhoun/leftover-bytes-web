@@ -115,11 +115,9 @@ export default {
       min-height: calc(100vh);
       padding: 0 0 40px;
     }
-  }
-  .container {
-    max-width: 720px;
-    margin: 0 auto;
-    padding: 40px 16px;
+    .document-pane {
+      margin-top: -40px;
+    }
   }
 }
 </style>

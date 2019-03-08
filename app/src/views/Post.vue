@@ -65,11 +65,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.post {
-  max-width: 720px;
-  margin: 0 auto;
-  padding: 40px 16px;
-}
 .hero {
   margin: 40px 0;
   img {

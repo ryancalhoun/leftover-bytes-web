@@ -1,6 +1,6 @@
 <template>
   <div class="archive">
-    <document-pane type="post" fetch="post.title, post.description, post.hero" v-slot="doc">
+    <document-pane type="post" orderings="[document.first_publication_date desc]" fetch="post.title, post.description, post.hero" v-slot="doc">
       <nav-header/>
       <h1>
         Archive
@@ -45,10 +45,6 @@ export default {
 
 <style scoped lang="scss">
 .archive {
-  max-width: 720px;
-  margin: 0 auto;
-  padding: 80px 16px;
-
   .post {
     margin: 12px 0;
 

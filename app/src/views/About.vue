@@ -43,11 +43,6 @@ export default {
 
 
 <style scoped lang="scss">
-.about {
-  max-width: 720px;
-  margin: 0 auto;
-  padding: 80px 16px;
-}
 .authors {
   margin-top: 80px;
 }

@@ -106,8 +106,8 @@ $background: #af4213;
       display: block;
       position: absolute;
       top: 0;
-      left: 300px;
-      width: calc(100% - 600px);
+      left: 250px;
+      width: calc(100% - 500px);
       height: $height;
     }
 
@@ -115,6 +115,10 @@ $background: #af4213;
       &, a, a > * {
         padding: 0;
         display: inline;
+      }
+
+      a {
+        margin: 0 8px;
       }
     }
     ul {
@@ -128,7 +132,6 @@ $background: #af4213;
   a {
     color: white;
     text-decoration: none;
-    margin: 0 8px;
   }
 }
 </style>
