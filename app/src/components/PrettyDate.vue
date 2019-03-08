@@ -10,7 +10,7 @@ export default {
   props: {date: String},
   data() {
     return {
-      prettyDate: new Intl.DateTimeFormat('en-US', {year: 'numeric', month: 'long', day: 'numeric'}).format(new Date(this.date))
+      prettyDate: new Intl.DateTimeFormat('en-US', {year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC'}).format(new Date(this.date))
     };
   }
 }
