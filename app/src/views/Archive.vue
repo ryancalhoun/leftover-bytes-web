@@ -1,7 +1,7 @@
 <template>
   <div class="archive">
+    <nav-header/>
     <document-pane type="post" orderings="[document.first_publication_date desc]" fetch="post.title, post.description, post.hero" v-slot="doc">
-      <nav-header/>
       <h1>
         Archive
       </h1>

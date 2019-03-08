@@ -1,5 +1,5 @@
 <template>
-  <div class="document-pane">
+  <div class="document-pane" v-bind:class="{ loaded: loaded }">
     <slot v-bind:results="results" v-if="results.length > 0"></slot>
   </div>
 </template>
@@ -12,10 +12,20 @@ let api = Prismic.getApi(baseurl);
 
 export default {
   name: 'DocumentPane',
-  props: ['type', 'id', 'uid', 'year', 'month', 'orderings', 'fetch', 'fetchLinks'],
+  props: [
+    'type',
+    'id',
+    'uid',
+    'year',
+    'month',
+    'orderings',
+    'fetch',
+    'fetchLinks'
+  ],
   data() {
     return {
       results: [],
+      loaded: false,
     }
   },
   mounted() {
@@ -54,6 +64,7 @@ export default {
         api.query(q, opts).then(response => {
           this.results = response.results;
           this.$emit('document-loaded', this.results);
+          this.loaded = true;
         })
       );
     }
@@ -66,5 +77,11 @@ export default {
   max-width: 720px;
   margin: 0 auto;
   padding: 100px 16px;
+  opacity: 0;
+
+  &.loaded {
+    transition: opacity 0.3s ease;
+    opacity: 1;
+  }
 }
 </style>
