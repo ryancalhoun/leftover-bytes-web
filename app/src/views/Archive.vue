@@ -8,7 +8,7 @@
       <div class="post" v-for="post in doc.results" v-bind:key="post.id">
         <router-link :to="url(post)">
           <div class="thumbnail">
-            <img v-bind:src="post.data.hero.thumbnail.url"/>
+            <img v-bind:src="post.data.hero.thumbnail.url" v-bind:alt="post.data.hero.alt"/>
           </div>
           <div class="info">
             <div class="title"> {{ post.data.title[0].text }} </div>

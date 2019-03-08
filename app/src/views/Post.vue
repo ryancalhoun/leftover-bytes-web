@@ -20,7 +20,7 @@
         </author-credit>
       </div>
       <div class="hero">
-        <img v-bind:src="doc.results[0].data.hero.url"/>
+        <img v-bind:src="doc.results[0].data.hero.url" v-bind:alt="doc.results[0].data.hero.alt"/>
       </div>
       <div class="body">
         <text-field v-bind:text="doc.results[0].data.body"/>
