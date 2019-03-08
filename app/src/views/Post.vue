@@ -15,7 +15,7 @@
         <text-field v-bind:text="doc.results[0].data.description"/>
         <author-credit v-bind:author="doc.results[0].data.author">
           <div class="date">
-            {{ prettyDate(doc.results[0].first_publication_date) }}
+            <pretty-date v-bind:date="doc.results[0].first_publication_date"/>
           </div>
         </author-credit>
       </div>
@@ -33,6 +33,7 @@
 import NavHeader from '@/components/NavHeader.vue'
 import DocumentPane from '@/components/DocumentPane.vue'
 import AuthorCredit from '@/components/AuthorCredit.vue'
+import PrettyDate from '@/components/PrettyDate.vue'
 import TextField from '@/components/TextField'
 
 export default {
@@ -46,12 +47,10 @@ export default {
     NavHeader,
     DocumentPane,
     AuthorCredit,
+    PrettyDate,
     TextField,
   },
   methods: {
-    prettyDate(date) {
-      return new Intl.DateTimeFormat('en-US', {year: 'numeric', month: 'long', day: 'numeric'}).format(new Date(date));
-    },
     onLoaded(results) {
       const post = results[0];
       if(post.first_publication_date) {

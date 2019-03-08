@@ -12,6 +12,7 @@
           </div>
           <div class="info">
             <div class="title"> {{ post.data.title[0].text }} </div>
+            <div class="date"> <pretty-date v-bind:date="post.first_publication_date"/> </div>
             <div class="description"> {{ post.data.description[0].text }} </div>
           </div>
         </router-link>
@@ -23,12 +24,14 @@
 <script>
 import NavHeader from '@/components/NavHeader.vue'
 import DocumentPane from '@/components/DocumentPane.vue'
+import PrettyDate from '@/components/PrettyDate.vue'
 
 export default {
   name: 'archive',
   components: {
     NavHeader,
     DocumentPane,
+    PrettyDate,
   },
   methods: {
     url(post) {
@@ -46,22 +49,32 @@ export default {
 <style scoped lang="scss">
 .archive {
   .post {
-    margin: 12px 0;
+    margin: 12px 0 20px;
+    a {
+      display: block;
+      padding: 8px 4px;
+      @media screen and (min-width: 768px) {
+        padding: 8px 20px;
+      }
+      &:hover, &:focus {
+        box-shadow: 1px 7px 20px rgba(0, 0, 0, 0.2);
+      }
+    }
 
     .thumbnail, .info {
       display: inline-block;
       vertical-align: top;
     }
     .thumbnail {
-      width: 50px;
-      height: 50px;
+      width: 60px;
+      height: 60px;
       img {
         width: 100%;
         height: 100%;
       }
     }
     .info {
-      width: calc(100% - 50px);
+      width: calc(100% - 60px);
       padding-left: 12px;
 
       color: #444444;
@@ -72,6 +85,9 @@ export default {
 
       .description {
         margin: 4px 0;
+      }
+      .date {
+        font-size: 14px;
       }
     }
 
