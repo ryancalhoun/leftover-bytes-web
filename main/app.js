@@ -2,14 +2,15 @@
 
 const express = require('express');
 const fs = require('fs');
-const sitemap = require('./sitemap');
+const Sitemap = require('./sitemap');
+const SocialShare = require('./social-share');
 
 const app = express();
 
 app.get('/sitemap.xml', (req, res) => {
   res.setHeader("Content-Type", "application/xml");
   res.writeHead(200);
-  sitemap.generate().then((xml) => {
+  new Sitemap().generate().then((xml) => {
     res.write(xml);
     res.end();
   });
@@ -24,15 +25,19 @@ app.get('/*', (req, res) => {
     return;
   }
 
-  const userAgent = req.header('User-Agent');
   const clientIp = (req.header('X-Forwarded-For') || '').split(',').shift();
 
-  fs.readFile('index.html', 'utf8', (err, contents) => {
-    res.setHeader("Content-Type", "text/html");
-    res.setHeader("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
-    res.send(contents);
-    res.end();
-  });
+  const socialShare = new SocialShare(req);
+  if(socialShare.isBot()) {
+    socialShare.handle(res);
+  } else {
+    fs.readFile('index.html', 'utf8', (err, contents) => {
+      res.setHeader("Content-Type", "text/html");
+      res.setHeader("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
+      res.send(contents);
+      res.end();
+    });
+  }
 });
 
 const PORT = process.env.PORT || 8080;

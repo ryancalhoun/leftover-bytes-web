@@ -33,4 +33,4 @@ class Sitemap {
     return doc.toString({pretty: true});
   }
 }
-module.exports = new Sitemap();
+module.exports = Sitemap;
