@@ -74,11 +74,16 @@ export default {
   &::v-deep {
     img {
       max-width: 100%;
+      margin: 20px auto;
+      display: block;
     }
     pre {
       background: #eee;
       padding: 20px 40px;
       font-size: 14px;
+    }
+    a {
+      color: #af4213;
     }
   }
 }

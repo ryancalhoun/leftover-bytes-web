@@ -103,8 +103,9 @@ export default {
 
         const n = s.index + (s.end ? 1 : 0);
         const m = t.index - (t.end ? 0 : 1);
-        if(n < m) {
-          ranges.push({spans: Object.assign(types), start: n, end: m});
+
+        if(n < m && Object.keys(types).length > 0) {
+          ranges.push({spans: JSON.parse(JSON.stringify(types)), start: n, end: m});
         }
       }
 
