@@ -11,11 +11,11 @@ export default {
         }
         const types = Object.keys(r.spans);
 
-        let m = obj.text.substring(r.start, r.end + 1);
+        let m = obj.text.substring(r.start, r.end);
         types.forEach(t => m = h(t, {props: r.spans[t].data}, [m]));
         rendered.push(m);
 
-        last = r.end + 1;
+        last = r.end;
       });
       if(last < obj.text.length) {
         rendered.push(obj.text.substring(last));

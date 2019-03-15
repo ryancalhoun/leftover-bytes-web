@@ -21,8 +21,13 @@ html, body {
 
 #app {
   font-family: 'Roboto', sans-serif;
+  font-size: 16px;
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Merriweather', serif;
+    letter-spacing: 0.02em;
+  }
+  p {
+    line-height: 1.5em;
   }
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
