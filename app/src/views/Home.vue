@@ -18,10 +18,14 @@
     </div> 
     <div id="content" class="content" ref="content">
       <nav-header/>
-      <document-pane type="home" v-on:document-loaded="onDocumentLoaded" v-slot="doc">
+      <document-pane type="home" v-on:document-loaded="onDocumentLoaded" v-bind:fetchLinks="fetchLinks" v-slot="doc">
         <div class="container">
           <div class="body">
             <text-field v-bind:text="doc.results[0].data.body"/>
+          </div>
+          <div class="posts">
+            <h3> Featured </h3>
+            <post-link v-for="post in posts" v-bind:key="post.id" v-bind:post="post"/>
           </div>
         </div>
       </document-pane>
@@ -32,6 +36,7 @@
 <script>
 import NavHeader from '@/components/NavHeader.vue'
 import DocumentPane from '@/components/DocumentPane.vue'
+import PostLink from '@/components/PostLink.vue'
 import TextField from '@/components/TextField'
 
 export default {
@@ -41,11 +46,14 @@ export default {
       title: [],
       description: [],
       hero: {},
+      fetchLinks: ['post.title', 'post.description', 'post.hero'],
+      posts: [],
     }
   },
   components: {
     NavHeader,
     DocumentPane,
+    PostLink,
     TextField,
   },
   mounted() {
@@ -58,7 +66,8 @@ export default {
       this.title = result[0].data.title;
       this.description = result[0].data.description;
       this.hero = result[0].data.hero;
-    }
+      this.posts = result[0].data.posts.map(p => p.post);
+    },
   }
 }
 </script>
@@ -157,6 +166,12 @@ export default {
     .document-pane {
       margin-top: -40px;
     }
+  }
+  .posts {
+    h3 {
+      margin: 40px 0;
+    }
+    margin: 80px 0;
   }
 }
 </style>
