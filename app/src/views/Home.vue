@@ -1,19 +1,24 @@
 <template>
   <div class="home">
     <div class="hero" ref="hero">
+      <picture v-if="hero.url">
+        <source media="screen and (max-width:767px)" v-bind:srcset="hero.mobile.url"/>
+        <source media="screen and (max-width:1999px)" v-bind:srcset="hero.desktop.url"/>
+        <img v-bind:src="hero.url" v-bind:alt="hero.alt"/>
+      </picture>
+      <div class="mask"/>
       <div class="centering">
         <div class="title">
-          <h1> Leftover Bytes </h1>
+          <text-field v-bind:text="title"/>
         </div>
         <div class="subtitle">
-          <p> There are many bytes out there on the web. </p>
-          <p> These are the leftovers. </p>
+          <text-field v-bind:text="description"/>
         </div>
       </div>
     </div> 
     <div id="content" class="content" ref="content">
       <nav-header/>
-      <document-pane type="home" v-slot="doc">
+      <document-pane type="home" v-on:document-loaded="onDocumentLoaded" v-slot="doc">
         <div class="container">
           <div class="body">
             <text-field v-bind:text="doc.results[0].data.body"/>
@@ -33,7 +38,9 @@ export default {
   name: 'home',
   data() {
     return {
-      body: []
+      title: [],
+      description: [],
+      hero: {},
     }
   },
   components: {
@@ -46,6 +53,13 @@ export default {
       window.scroll(0, this.$refs.content.offsetTop);
     });
   },
+  methods: {
+    onDocumentLoaded(result) {
+      this.title = result[0].data.title;
+      this.description = result[0].data.description;
+      this.hero = result[0].data.hero;
+    }
+  }
 }
 </script>
 
@@ -65,20 +79,53 @@ export default {
   }
 
   .hero {
-    background-color: #4d4d4d;
+    background: #4d4d4d;
     color: white;
     text-align: left;
-    height: calc(100vh - 40px);
-    min-height: calc(320px - 40px);
+    height: 350px;
     padding: 40px 0;
     margin-top: 40px;
     @media screen and (min-width: 768px) {
       margin-top: 0;
     }
-    h1 {
-      margin: 0;
-      font-size: 32px;
+    position: relative;
+    picture, .mask {
+      position: absolute;
+      top: 0;
+      overflow: hidden;
+      height: 100%;
+      width: 100%;
     }
+    img {
+      display: block;
+      position: relative;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      @media screen and (min-width: 768px) {
+        width: 100%;
+      }
+    }
+    .mask {
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+    &::v-deep {
+      h1 {
+        margin: 0;
+        font-size: 32px;
+      }
+      p {
+        margin: 0;
+        font-style: italic;
+      }
+      @media screen and (min-width: 425px) {
+        h1 {
+          margin: 0;
+          font-size: 48px;
+        }
+      }
+    }
+
     .centering {
       position: relative;
       top: calc(50% - 40px);
@@ -94,15 +141,7 @@ export default {
     .subtitle {
       margin: 40px auto 40px;
     }
-    p {
-      margin: 0;
-      font-style: italic;
-    }
     @media screen and (min-width: 425px) {
-      h1 {
-        margin: 0;
-        font-size: 48px;
-      }
       .title {
         margin-top: 40px;
       }
