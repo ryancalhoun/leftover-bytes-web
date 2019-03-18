@@ -7,7 +7,7 @@ class SocialShare {
   }
   isBot() {
     const userAgent = this.req.header('User-Agent');
-    if(userAgent.match(/facebot|facebookexternalhit/i)) {
+    if(userAgent.match(/facebot|facebookexternalhit|twitterbot|linkedinbot/i)) {
       return true;
     }
     return false;
@@ -26,29 +26,45 @@ class SocialShare {
     });
   }
   setProps(xml, page) {
-    if(page && page.type == 'author') {
-      this.meta(xml, 'og:title', page.data.name);
-      this.meta(xml, 'og:description', page.data.bio[0].text);
-    } else if(page && page.type == 'info') {
-      this.meta(xml, 'og:title', page.data.title[0].text);
-      this.meta(xml, 'og:description', page.data.body[0].text);
+    this.meta(xml, 'og:type', 'website');
+    this.meta(xml, 'twitter:card', 'summary');
+    if(page && page.type == 'home') {
+      this.setDocumentProps(
+        xml,
+        page.data.title[0].text,
+        page.data.description.map(p => p.text).join(' '),
+        page.data.hero.social.url
+      );
+    } else if(page && page.type == 'author') {
+      this.setDocumentProps(
+        xml,
+        page.data.name,
+        page.data.bio[0].text,
+        page.data.photo.url
+      );
     } else if(page && page.type == 'post') {
-      this.meta(xml, 'og:title', page.data.title[0].text);
-      this.meta(xml, 'og:description', page.data.description[0].text);
-    } else {
-      this.meta(xml, 'og:title', 'Leftover Bytes');
-      this.meta(xml, 'og:description', 'Leftover Bytes is a collection of insights on software and technology.');
+      this.setDocumentProps(
+        xml,
+        page.data.title[0].text,
+        page.data.description[0].text,
+        page.data.hero.url
+      );
     }
+  }
+  setDocumentProps(xml, title, description, image) {
+    this.meta(xml, 'og:title', title);
+    this.meta(xml, 'og:description', description);
+    this.meta(xml, 'og:image', image);
+    this.meta(xml, 'twitter:title', title);
+    this.meta(xml, 'twitter:description', description);
+    this.meta(xml, 'twitter:image', image);
   }
   async getDocument() {
     const path = this.req.url.split('/').filter(x => x);
 
     const q = [];
-    if(path.length == 0) {
+    if(path.length <= 1) {
       q.push(prismic.Predicates.at('document.type', 'home'));
-    } else if(path.length == 1) {
-      q.push(prismic.Predicates.at('document.type', 'info'));
-      q.push(prismic.Predicates.at('my.info.uid', path[path.length-1]));
     } else {
       const type = path[0].replace(/s$/, '');
       q.push(prismic.Predicates.at('document.type', type));
