@@ -62,12 +62,13 @@ export default {
   }
   .info {
     width: calc(100% - 60px);
-    padding-left: 12px;
+    padding-left: 16px;
 
     color: #444444;
 
     .title {
       font-weight: bold;
+      letter-spacing: 0.02em;
     }
 
     .description {
