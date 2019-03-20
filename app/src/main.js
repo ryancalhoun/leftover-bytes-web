@@ -17,7 +17,6 @@ new Vue({
   router,
   render: (h) => h(App),
   mounted: () => {
-    adsense.attach();
     tracking.attach();
     router.afterEach((to, from) => {
       tracking.update(to.path);
