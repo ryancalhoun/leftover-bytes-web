@@ -79,9 +79,12 @@ export default {
     }
     pre {
       background: #eee;
-      padding: 20px 40px;
+      padding: 20px 16px;
       font-size: 14px;
       overflow: auto;
+      @media screen and (min-width: 768px) {
+        padding: 20px 40px;
+      }
     }
     a {
       color: #af4213;
