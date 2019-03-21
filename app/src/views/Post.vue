@@ -81,7 +81,7 @@ export default {
       background: #eee;
       padding: 20px 40px;
       font-size: 14px;
-      overflow-x: scroll;
+      overflow: auto;
     }
     a {
       color: #af4213;
