@@ -82,4 +82,4 @@ class SocialShare {
   }
 };
 
-module.exports = SocialShare;
+export { SocialShare };

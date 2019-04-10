@@ -2,8 +2,10 @@
 
 const express = require('express');
 const fs = require('fs');
-const Sitemap = require('./sitemap');
-const SocialShare = require('./social-share');
+const esm = require('esm')(module);
+
+const Sitemap = esm('./sitemap').Sitemap;
+const SocialShare = esm('./social-share').SocialShare;
 
 const app = express();
 
