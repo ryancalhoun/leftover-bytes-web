@@ -5,14 +5,14 @@ class SocialShare {
   constructor(req) {
     this.req = req;
   }
-  isBot() {
+  matches() {
     const userAgent = this.req.header('User-Agent');
     if(userAgent.match(/facebot|facebookexternalhit|twitterbot|linkedinbot/i)) {
       return true;
     }
     return false;
   }
-  handle(res) {
+  async handle(res) {
     this.getDocument().then(page => {
       const doc = builder.create('html');
       const head = doc.ele('head');

@@ -1,11 +1,12 @@
 'use strict';
 
 const express = require('express');
-const fs = require('fs');
 const esm = require('esm')(module);
 
+const MediumImport = esm('./medium-import').MediumImport;
 const Sitemap = esm('./sitemap').Sitemap;
 const SocialShare = esm('./social-share').SocialShare;
+const WebClient = esm('./web-client').WebClient;
 
 const app = express();
 
@@ -27,19 +28,11 @@ app.get('/*', (req, res) => {
     return;
   }
 
-  const clientIp = (req.header('X-Forwarded-For') || '').split(',').shift();
+  const handlers = [SocialShare, MediumImport, WebClient].map(x => new x(req)).filter(f => f.matches());
 
-  const socialShare = new SocialShare(req);
-  if(socialShare.isBot()) {
-    socialShare.handle(res);
-  } else {
-    fs.readFile('index.html', 'utf8', (err, contents) => {
-      res.setHeader("Content-Type", "text/html");
-      res.setHeader("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
-      res.send(contents);
-      res.end();
-    });
-  }
+  handlers[0].handle(res).catch(() => {
+    handlers[handlers.length-1].handle(res);
+  });
 });
 
 const PORT = process.env.PORT || 8080;
