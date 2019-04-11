@@ -48,6 +48,7 @@ class TextProcessor {
         (node.children || []).forEach(c => append(e, c));
       }
     }
+
     append(this.doc, top);
   }
 }
@@ -82,10 +83,15 @@ class MediumImport {
     const doc = builder.create('html');
     const body = doc.ele('body');
 
-    const processor = new TextProcessor(body);
+
+    const header = body.ele('header');
+    let processor = new TextProcessor(header);
+    header.ele('img', {src: page.data.hero.url, alt: page.data.hero.alt});
     processor.process(page.data.title);
     processor.process(page.data.description);
-    body.ele('div').ele('img', {src: page.data.hero.url, alt: page.data.hero.alt});
+
+    const main = body.ele('main');
+    processor = new TextProcessor(main);
     processor.process(page.data.body);
 
     res.send(doc.toString({pretty: true}));
