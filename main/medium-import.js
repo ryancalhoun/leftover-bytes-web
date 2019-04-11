@@ -23,10 +23,17 @@ class TextProcessor {
       }
       if(elem == 'hyperlink') {
         elem = 'a';
-        attrs = {
-          href: 'https://leftoverbytes.com/posts/' + attrs.id + '/' + attrs.uid,
-          target: '_blank',
-        };
+        if(attrs.link_type == 'Document') {
+          attrs = {
+            href: 'https://leftoverbytes.com/posts/' + attrs.id + '/' + attrs.uid,
+            target: '_blank',
+          };
+        } else if(attrs.link_type == 'Web') {
+          attrs = {
+            href: attrs.url,
+            target: '_blank',
+          };
+        }
       }
       return top = { element: elem, attrs: attrs, children: children };
     }
