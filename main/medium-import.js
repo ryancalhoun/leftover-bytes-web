@@ -91,7 +91,7 @@ class MediumImport {
     const main = body.ele('main');
     processor = new TextProcessor(main);
     processor.process(page.data.description);
-    main.ele('img', {src: page.data.hero.url, alt: page.data.hero.alt});
+    main.ele('img', {src: page.data.hero.url});
     processor.process(page.data.body);
 
     res.send(doc.toString({pretty: true}));
