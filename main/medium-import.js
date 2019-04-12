@@ -40,16 +40,26 @@ class TextProcessor {
 
     prismic.process(h);
 
+    let outer;
     const append = (xml, node) => {
       if(typeof node == 'string') {
         xml.txt(node);
       } else {
         const e = xml.ele(node.element, node.attrs);
+        if(!outer) {
+          outer = e;
+          if(this.onouter) {
+            this.onouter(outer);
+          }
+        }
+
         (node.children || []).forEach(c => append(e, c));
       }
     }
 
     append(this.doc, top);
+
+    return outer;
   }
 }
 
@@ -89,9 +99,12 @@ class MediumImport {
     processor.process(page.data.title);
 
     const main = body.ele('main');
+
     processor = new TextProcessor(main);
     processor.process(page.data.description);
-    main.ele('img', {src: page.data.hero.thumbnail.url});
+
+    processor.onouter = (outer) => 
+      outer.ele('img', {src: page.data.hero.url, alt: page.data.hero.alt});
     processor.process(page.data.body);
 
     res.send(doc.toString({pretty: true}));
