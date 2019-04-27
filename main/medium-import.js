@@ -69,6 +69,9 @@ class MediumImport {
   }
   matches() {
     const userAgent = this.req.header('User-Agent');
+    if(userAgent.indexOf('Embedly') > -1) {
+      return true;
+    }
     if(userAgent == 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36') {
       return true;
     }
