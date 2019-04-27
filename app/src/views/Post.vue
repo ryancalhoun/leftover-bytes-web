@@ -36,6 +36,8 @@ import AuthorCredit from '@/components/AuthorCredit.vue'
 import PrettyDate from '@/components/PrettyDate.vue'
 import TextField from '@/components/TextField'
 
+import tracking from '@/google/tracking'
+
 export default {
   name: 'Post',
   data() {
@@ -57,6 +59,7 @@ export default {
         const date = new Date(post.first_publication_date.replace("+0000", "Z"));
         const url = "/posts/" + date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + post.uid;
         this.$router.replace(url);
+        tracking.update(url);
       }
     }
   }
