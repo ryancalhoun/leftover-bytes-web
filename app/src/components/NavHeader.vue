@@ -16,6 +16,7 @@
           <div v-on:click="gohome()"> Home </div>
         </router-link> </li>
         <li> <router-link to="/about/">About</router-link> </li>
+        <li> <router-link to="/topics/">Topics</router-link> </li>
         <li> <router-link to="/archive/">Archive</router-link> </li>
         <li> <router-link to="/contact/">Contact</router-link> </li>
       </ul>
@@ -106,8 +107,8 @@ $background: #af4213;
       display: block;
       position: absolute;
       top: 0;
-      left: 250px;
-      width: calc(100% - 500px);
+      left: 200px;
+      width: calc(100% - 400px);
       height: $height;
     }
 
@@ -124,7 +125,7 @@ $background: #af4213;
     ul {
       display: block;
       padding: 0;
-      max-width: 300px;
+      max-width: 330px;
       margin: 0 auto;
     }
   }

@@ -16,8 +16,11 @@ export default {
     'type',
     'id',
     'uid',
+    'name',
     'year',
     'month',
+    'link',
+    'to',
     'orderings',
     'fetch',
     'fetchLinks'
@@ -54,6 +57,12 @@ export default {
         q.push(Prismic.Predicates.at('document.type', this.type));
         if(this.uid)
           q.push(Prismic.Predicates.at('my.' + this.type + '.uid', this.uid));
+        if(this.name) {
+          q.push(Prismic.Predicates.at('my.' + this.type + '.name', this.name));
+        }
+      }
+      if(this.link && this.to) {
+        q.push(Prismic.Predicates.at('my.' + this.type + '.' + this.link, this.to));
       }
       if(this.year)
         q.push(Prismic.Predicates.year('document.first_publication_date', parseInt(this.year)));

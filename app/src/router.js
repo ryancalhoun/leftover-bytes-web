@@ -4,6 +4,8 @@ import Home from './views/Home.vue'
 import About from './views/About.vue'
 import Contact from './views/Contact.vue'
 import Post from './views/Post.vue'
+import Topics from './views/Topics.vue'
+import ByTopic from './views/ByTopic.vue'
 import Archive from './views/Archive.vue'
 import Author from './views/Author.vue'
 
@@ -43,6 +45,16 @@ export default new Router({
       path: '/posts/:id/:uid',
       name: 'post-by-id',
       component: Post
+    },
+    {
+      path: '/topics',
+      name: 'topics',
+      component: Topics,
+    },
+    {
+      path: '/topics/:name',
+      name: 'by-topic',
+      component: ByTopic,
     },
     {
       path: '/archive',
