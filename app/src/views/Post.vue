@@ -26,7 +26,9 @@
         <ins
           class="adsbygoogle"
           data-ad-client="ca-pub-9556333271333976"
-          data-ad-slot="1234567890"></ins>
+          data-ad-slot="7127866543"
+          data-ad-format="auto"
+          data-full-width-responsive="true"></ins>
         <text-field v-bind:text="doc.results[0].data.body"/>
       </div>
     </document-pane>
@@ -100,12 +102,7 @@ export default {
   }
 }
 ins.adsbygoogle {
-  display: inline-block;
-  width: 100%;
-  height:40px;
-  @media screen and (min-width: 768px) {
-    height:90px;
-  }
+  display: block;
 }
 </style>
 
