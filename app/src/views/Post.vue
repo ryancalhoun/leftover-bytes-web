@@ -23,6 +23,11 @@
         <img v-bind:src="doc.results[0].data.hero.url" v-bind:alt="doc.results[0].data.hero.alt"/>
       </div>
       <div class="body">
+        <ins
+          class="adsbygoogle"
+          style="display:inline-block;max-width:728px;max-height:90px"
+          data-ad-client="ca-pub-9556333271333976"
+          data-ad-slot="1234567890"></ins>
         <text-field v-bind:text="doc.results[0].data.body"/>
       </div>
     </document-pane>
@@ -61,6 +66,10 @@ export default {
         this.$router.replace(url);
         tracking.update(url);
       }
+      (adsbygoogle = window.adsbygoogle || []).push({
+        google_ad_client: "ca-pub-9556333271333976",
+        enable_page_level_ads: true
+      });
     }
   }
 }
