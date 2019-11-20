@@ -25,7 +25,6 @@
       <div class="body">
         <ins
           class="adsbygoogle"
-          style="display:inline-block;max-width:728px;max-height:90px"
           data-ad-client="ca-pub-9556333271333976"
           data-ad-slot="1234567890"></ins>
         <text-field v-bind:text="doc.results[0].data.body"/>
@@ -98,6 +97,14 @@ export default {
     a {
       color: #af4213;
     }
+  }
+}
+ins.adsbygoogle {
+  display: inline-block;
+  width: 100%;
+  height:40px;
+  @media screen and (min-width: 768px) {
+    height:90px;
   }
 }
 </style>
