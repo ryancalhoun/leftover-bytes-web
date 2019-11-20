@@ -1,5 +1,8 @@
 runtime: nodejs10
 handlers:
+- url: /ads\.txt
+  upload: ads\.txt
+  static_files: ads.txt
 - url: /robots\.txt
   upload: robots\.txt
   static_files: robots.txt
