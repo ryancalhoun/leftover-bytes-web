@@ -7,7 +7,7 @@ class SocialShare {
   }
   matches() {
     const userAgent = this.req.header('User-Agent');
-    if(userAgent.match(/facebot|facebookexternalhit|twitterbot|linkedinbot/i)) {
+    if(userAgent && userAgent.match(/facebot|facebookexternalhit|twitterbot|linkedinbot/i)) {
       return true;
     }
     return false;
