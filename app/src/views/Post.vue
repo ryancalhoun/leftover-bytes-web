@@ -66,10 +66,7 @@ export default {
         this.$router.replace(url);
         tracking.update(url);
       }
-      (adsbygoogle = window.adsbygoogle || []).push({
-        google_ad_client: "ca-pub-9556333271333976",
-        enable_page_level_ads: true
-      });
+      (adsbygoogle = window.adsbygoogle || []).push({});
     }
   }
 }
