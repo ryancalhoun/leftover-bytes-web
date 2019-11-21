@@ -11,8 +11,8 @@ module.exports = {
   devServer: {
     disableHostCheck: true,
     proxy: {
-      '/posts/.*/comments': {
-        target: 'https://20191121t212725-dot-leftoverbytes.appspot.com/',
+      '/comments/.*': {
+        target: 'https://leftoverbytes.appspot.com/',
       }
     }
   }

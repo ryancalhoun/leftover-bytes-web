@@ -52,6 +52,7 @@ html, body {
     ul {
       position: absolute;
       right: 50px;
+      top: 0;
       &, li {
         display: inline-block;
         list-style: none;

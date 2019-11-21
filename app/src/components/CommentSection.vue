@@ -19,7 +19,7 @@ export default {
     }
   },
   async created() {
-    const response = await fetch(`/posts/${this.post}/comments`);
+    const response = await fetch(`/comments/${this.post}`);
     if(response.ok) {
       const data = await response.json();
       console.log(data);
