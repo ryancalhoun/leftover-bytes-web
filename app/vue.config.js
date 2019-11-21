@@ -6,5 +6,14 @@ module.exports = {
   pwa: {
     name: 'Leftover Bytes',
     themeColor: '#af4212',
+  },
+
+  devServer: {
+    disableHostCheck: true,
+    proxy: {
+      '/posts/.*/comments': {
+        target: 'https://20191121t212725-dot-leftoverbytes.appspot.com/',
+      }
+    }
   }
 }

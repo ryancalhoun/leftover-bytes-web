@@ -1,7 +1,6 @@
 <template>
-  <div class="comment-section">
+  <div class="comment-section" v-if="implemented">
     {{ post }}
-
     <textarea
       placeholder="Leave a comment"
       rows="1"
@@ -14,6 +13,19 @@
 <script>
 export default {
   props: ['post'],
+  data() {
+    return {
+      implemented: false
+    }
+  },
+  async created() {
+    const response = await fetch(`/posts/${this.post}/comments`);
+    if(response.ok) {
+      const data = await response.json();
+      console.log(data);
+      this.implemented = true;
+    }
+  },
   methods: {
     focus(e) {
       e.target.rows = 2;
