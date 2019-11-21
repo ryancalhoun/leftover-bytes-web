@@ -7,8 +7,10 @@ const MediumImport = esm('./medium-import').MediumImport;
 const Sitemap = esm('./sitemap').Sitemap;
 const SocialShare = esm('./social-share').SocialShare;
 const WebClient = esm('./web-client').WebClient;
+const Comments = esm('./comments').Comments;
 
 const app = express();
+app.use(express.json());
 
 app.get('/sitemap.xml', (req, res) => {
   res.setHeader("Content-Type", "application/xml");
@@ -17,6 +19,31 @@ app.get('/sitemap.xml', (req, res) => {
     res.write(xml);
     res.end();
   });
+});
+
+app.get('/posts/:post/comments', async (req, res) => {
+  const comments = new Comments();
+  console.log(`Get comments on ${req.params.post}`);
+  res.writeHead(200);
+  res.end();
+});
+app.post('/posts/:post/comments', async (req, res) => {
+  const comments = new Comments();
+  console.log(`Post comment on ${req.params.post}: ${req.body}`);
+  res.writeHead(200);
+  res.end();
+});
+app.put('/posts/:post/comments/:comment', async (req, res) => {
+  const comments = new Comments();
+  console.log(`Update comment ${req.params.comment} on ${req.params.post}: ${req.body}`);
+  res.writeHead(200);
+  res.end();
+});
+app.delete('/posts/:post/comments/:comment', async (req, res) => {
+  const comments = new Comments();
+  console.log(`Delete comment ${req.params.comment} on ${req.params.post}`);
+  res.writeHead(200);
+  res.end();
 });
 
 app.get('/*', (req, res) => {
