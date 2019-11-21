@@ -31,6 +31,7 @@
       <div class="body">
         <text-field v-bind:text="doc.results[0].data.body"/>
         <related v-bind:tags="doc.results[0].data.tags"/>
+        <comment-section v-bind:post="doc.results[0].id"/>
       </div>
     </document-pane>
   </div>
@@ -40,6 +41,7 @@
 import NavHeader from '@/components/NavHeader.vue'
 import DocumentPane from '@/components/DocumentPane.vue'
 import AuthorCredit from '@/components/AuthorCredit.vue'
+import CommentSection from '@/components/CommentSection.vue'
 import PrettyDate from '@/components/PrettyDate.vue'
 import Related from '@/components/Related.vue'
 import TextField from '@/components/TextField'
@@ -57,6 +59,7 @@ export default {
     NavHeader,
     DocumentPane,
     AuthorCredit,
+    CommentSection,
     PrettyDate,
     Related,
     TextField,
