@@ -30,6 +30,7 @@
       </div>
       <div class="body">
         <text-field v-bind:text="doc.results[0].data.body"/>
+        <related v-bind:tags="doc.results[0].data.tags"/>
       </div>
     </document-pane>
   </div>
@@ -40,6 +41,7 @@ import NavHeader from '@/components/NavHeader.vue'
 import DocumentPane from '@/components/DocumentPane.vue'
 import AuthorCredit from '@/components/AuthorCredit.vue'
 import PrettyDate from '@/components/PrettyDate.vue'
+import Related from '@/components/Related.vue'
 import TextField from '@/components/TextField'
 
 import tracking from '@/google/tracking'
@@ -56,6 +58,7 @@ export default {
     DocumentPane,
     AuthorCredit,
     PrettyDate,
+    Related,
     TextField,
   },
   methods: {
