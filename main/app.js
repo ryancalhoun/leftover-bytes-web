@@ -24,25 +24,25 @@ app.get('/sitemap.xml', (req, res) => {
 app.get('/posts/:post/comments', async (req, res) => {
   const comments = new Comments();
   console.log(`Get comments on ${req.params.post}`);
-  res.writeHead(200);
+  res.writeHead(501);
   res.end();
 });
 app.post('/posts/:post/comments', async (req, res) => {
   const comments = new Comments();
-  console.log(`Post comment on ${req.params.post}: ${req.body}`);
-  res.writeHead(200);
+  console.log(`Post comment on ${req.params.post}: ${JSON.stringify(req.body)}`);
+  res.writeHead(501);
   res.end();
 });
 app.put('/posts/:post/comments/:comment', async (req, res) => {
   const comments = new Comments();
-  console.log(`Update comment ${req.params.comment} on ${req.params.post}: ${req.body}`);
-  res.writeHead(200);
+  console.log(`Update comment ${req.params.comment} on ${req.params.post}: ${JSON.stringify(req.body)}`);
+  res.writeHead(501);
   res.end();
 });
 app.delete('/posts/:post/comments/:comment', async (req, res) => {
   const comments = new Comments();
   console.log(`Delete comment ${req.params.comment} on ${req.params.post}`);
-  res.writeHead(200);
+  res.writeHead(501);
   res.end();
 });
 
