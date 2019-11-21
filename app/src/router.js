@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
 import About from './views/About.vue'
-import Contact from './views/Contact.vue'
+import Info from './views/Info.vue'
 import Post from './views/Post.vue'
 import Topics from './views/Topics.vue'
 import ByTopic from './views/ByTopic.vue'
@@ -34,7 +34,18 @@ export default new Router({
     {
       path: '/contact',
       name: 'contact',
-      component: Contact
+      component: Info,
+      props: {
+        uid: 'contact',
+      }
+    },
+    {
+      path: '/privacy',
+      name: 'privacy',
+      component: Info,
+      props: {
+        uid: 'privacy'
+      }
     },
     {
       path: '/posts/:year/:month/:uid',

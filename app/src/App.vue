@@ -3,6 +3,10 @@
     <router-view/>
     <footer>
       &copy; 2019 Ryan Calhoun
+
+      <ul>
+        <li> <router-link to="/privacy/"> Privacy Policy </router-link> </li>
+      </ul>
     </footer>
   </div>
 </template>
@@ -44,6 +48,15 @@ html, body {
     padding: 12px 40px;
     font-size: 14px;
     color: #777;
+
+    ul {
+      position: absolute;
+      right: 50px;
+      &, li {
+        display: inline-block;
+        list-style: none;
+      }
+    }
   }
 }
 </style>
