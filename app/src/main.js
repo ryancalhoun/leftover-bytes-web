@@ -6,6 +6,7 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import './registerServiceWorker'
+import 'vue-material-design-icons/styles.css';
 
 library.add(faBars, faTimes);
 Vue.component('fa', FontAwesomeIcon);
