@@ -67,7 +67,7 @@ Router.get('/google/verify', (req, res) => {
         onExchange(JSON.parse(body));
       });
     });
-    exchange.write(querystring.stringify(payload));
+    exchange.write(qs.stringify(payload));
     exchange.end();
   } else {
 
