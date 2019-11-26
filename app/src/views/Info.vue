@@ -18,6 +18,7 @@ import DocumentPane from '@/components/DocumentPane.vue'
 import TextField from '@/components/TextField'
 
 export default {
+  props: ['uid'],
   components: {
     NavHeader,
     DocumentPane,

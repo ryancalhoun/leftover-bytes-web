@@ -8,6 +8,7 @@ const Sitemap = esm('./sitemap').Sitemap;
 const SocialShare = esm('./social-share').SocialShare;
 const WebClient = esm('./web-client').WebClient;
 const CommentsRouter = esm('./comments').Router;
+const OAuthRouter = esm('./oauth').Router;
 
 const app = express();
 app.use(express.json());
@@ -22,6 +23,7 @@ app.get('/sitemap.xml', (req, res) => {
 });
 
 app.use('/comments', CommentsRouter);
+app.use('/oauth', OAuthRouter);
 
 app.get('/*', (req, res) => {
   let host = req.hostname.split('.');

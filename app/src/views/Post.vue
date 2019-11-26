@@ -30,8 +30,10 @@
       </div>
       <div class="body">
         <text-field v-bind:text="doc.results[0].data.body"/>
-        <related v-bind:tags="doc.results[0].data.tags"/>
-        <comment-section v-bind:post="doc.results[0].id"/>
+        <div class="more">
+          <related v-bind:tags="doc.results[0].data.tags"/>
+          <comment-section v-bind:post="doc.results[0].id"/>
+        </div>
       </div>
     </document-pane>
   </div>
@@ -104,6 +106,13 @@ export default {
     }
     a {
       color: #af4213;
+    }
+  }
+
+  .more {
+    padding: 20px 16px;
+    @media screen and (min-width: 768px) {
+      padding: 20px;
     }
   }
 }

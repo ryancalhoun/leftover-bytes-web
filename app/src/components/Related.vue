@@ -25,7 +25,7 @@ export default {
 <style scoped lang="scss">
 .related {
   text-align: right;
-  margin: 60px 40px 0 0;
+  margin: 40px 0;
   p {
     color: #777;
     font-style: italic;

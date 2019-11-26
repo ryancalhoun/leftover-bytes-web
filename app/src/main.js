@@ -2,13 +2,33 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import tracking from './google/tracking'
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import './registerServiceWorker'
-import 'vue-material-design-icons/styles.css';
+import VScrollLock from 'v-scroll-lock'
 
-library.add(faBars, faTimes);
+import {
+  faBars,
+  faTimes,
+  faTimesCircle,
+  faPaperPlane
+} from '@fortawesome/free-solid-svg-icons'
+import {
+  faGoogle,
+} from '@fortawesome/free-brands-svg-icons'
+
+import { library } from '@fortawesome/fontawesome-svg-core'
+
+library.add(
+  faBars,
+  faTimes,
+  faTimesCircle,
+  faPaperPlane,
+  faGoogle
+);
+
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+
+import './registerServiceWorker'
+
+Vue.use(VScrollLock)
 Vue.component('fa', FontAwesomeIcon);
 
 Vue.config.productionTip = false;

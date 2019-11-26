@@ -1,5 +1,6 @@
 <template>
   <div class="comment-section" v-if="implemented">
+    <h2> Discussion </h2>
     <comment-box/>
   </div>
 </template>
@@ -33,4 +34,12 @@ export default {
 </script>
 
 <style scoped lang="scss">
+h2 {
+  color: #aaa;
+}
+.comment-section {
+  border-top: 1px solid #ddd;
+  margin: 40px 0;
+  padding: 40px 0;
+}
 </style>
