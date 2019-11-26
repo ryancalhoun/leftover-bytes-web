@@ -14,12 +14,11 @@ const saveUser = async (data) => {
     key: ds.key(['User', Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)]),
   };
   entity.data = data;
-  console.log("Entity", entity);
 
   const r = await ds.save(entity);
   console.log(r);
 
-  return entity[ds.KEY];
+  return entity[Datastore.KEY].name;
 };
 
 Router.get('/user/:id', async (req, res) => {
