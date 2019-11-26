@@ -75,7 +75,7 @@ export default {
         this.$router.replace(url);
         tracking.update(url);
       }
-      this.$nextTick(() => (window.adsbygoogle || []).push({}));
+      //this.$nextTick(() => (window.adsbygoogle || []).push({}));
     }
   }
 }
