@@ -12,7 +12,7 @@ Router.get('/cookie', (req, res) => {
 
 Router.get('/google', (req, res) => {
   const returnUrl = new URL(req.query.returnUrl);
-  const redirectUrl = new URL(returnUrl).toString();
+  const redirectUrl = new URL(returnUrl.toString());
   redirectUrl.pathname = req.originalUrl + '/verify';
 
   const opts = {
@@ -34,7 +34,7 @@ Router.get('/google/verify', async (req, res) => {
   const returnUrl = new URL(req.query.state);
 
   if(code) {
-    const redirectUrl = new URL(returnUrl).toString();
+    const redirectUrl = new URL(returnUrl.toString());
     redirectUrl.pathname = req.originalUrl;
 
     const opts = {
