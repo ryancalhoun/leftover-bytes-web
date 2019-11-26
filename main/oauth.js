@@ -22,6 +22,14 @@ const saveUser = async (data) => {
   return entity.key;
 };
 
+Router.get('/user/:id', async (req, res) => {
+  const ds = new Datastore({ projectId: 'leftoverbytes' });
+  const [entity] = await ds.get(req.params.id);
+  console.log(entity);
+  res.send(JSON.stringify(entity.data));
+  res.end();
+});
+
 Router.get('/google', (req, res) => {
   const returnUrl = new URL(req.query.returnUrl);
   const redirectUrl = new URL(returnUrl.toString());
