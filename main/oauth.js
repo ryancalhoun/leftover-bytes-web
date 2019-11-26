@@ -47,6 +47,9 @@ Router.get('/google/verify', (req, res) => {
       port: 443,
       path: '/token',
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      }
     };
 
     console.log(payload);
@@ -60,6 +63,7 @@ Router.get('/google/verify', (req, res) => {
     };
 
     const exchange = https.request(opts, res => {
+      console.log("Exchange", res);
       let body = '';
       res.on('data', (chunk) => body += chunk);
       res.on('end', () => {
