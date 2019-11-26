@@ -15,7 +15,7 @@ module.exports = {
         target: 'https://leftoverbytes.appspot.com/',
       },
       '/oauth.*': {
-        target: 'https://20191126t171712-dot-leftoverbytes.appspot.com/',
+        target: 'https://20191126t172616-dot-leftoverbytes.appspot.com/',
         onProxyRes: res => {
 /*
           const loc = new URL(res.headers['location']);

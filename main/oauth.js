@@ -19,7 +19,7 @@ Router.get('/google', (req, res) => {
     client_id: '403632071908-7v9k2mk0cdbqpg698hd1rsklt86rd4k8.apps.googleusercontent.com',
     nonce: "" + Math.random(),
     response_type: 'code',
-    redirect_uri: url.toString(),
+    redirect_uri: redirectUrl.toString(),
     scope: 'openid profile email',
     state: returnUrl,
     prompt: 'select_account',
