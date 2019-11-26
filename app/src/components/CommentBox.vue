@@ -74,17 +74,7 @@ export default {
                          .trim();
     },
     google() {
-      const opts = {
-        client_id: '403632071908-7v9k2mk0cdbqpg698hd1rsklt86rd4k8.apps.googleusercontent.com',
-        nonce: "" + Math.random(),
-        response_type: 'code', //'id_token',
-        redirect_uri: `${window.location.origin}/oauth`,
-        scope: 'openid profile email',
-        state: window.location.pathname,
-        prompt: 'select_account',
-      };
-
-      window.location = `https://accounts.google.com/o/oauth2/v2/auth?${qs.stringify(opts)}`;
+      window.location = `/oauth/google?returnUrl=${window.location.href}`;
     },
   }
 }

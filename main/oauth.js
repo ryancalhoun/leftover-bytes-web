@@ -59,7 +59,7 @@ Router.get('/google/verify', (req, res) => {
       res.end();
     };
 
-    const exchange = https.request(opts, res = > {
+    const exchange = https.request(opts, res => {
       let body = '';
       res.on('data', (chunk) => body += chunk);
       res.on('end', () => {
