@@ -15,7 +15,7 @@ module.exports = {
         target: 'https://leftoverbytes.appspot.com/',
       },
       '/oauth.*': {
-        target: 'https://20191126t195909-dot-leftoverbytes.appspot.com/',
+        target: 'https://20191126t204931-dot-leftoverbytes.appspot.com/',
       },
     }
   }
