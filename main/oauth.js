@@ -13,7 +13,7 @@ Router.get('/cookie', (req, res) => {
 Router.get('/google', (req, res) => {
   const returnUrl = new URL(req.query.returnUrl);
   const redirectUrl = new URL(returnUrl.toString());
-  redirectUrl.pathname = req.originalUrl + '/verify';
+  redirectUrl.pathname = req.path + '/verify';
 
   const opts = {
     client_id: '403632071908-7v9k2mk0cdbqpg698hd1rsklt86rd4k8.apps.googleusercontent.com',
@@ -35,7 +35,7 @@ Router.get('/google/verify', async (req, res) => {
 
   if(code) {
     const redirectUrl = new URL(returnUrl.toString());
-    redirectUrl.pathname = req.originalUrl;
+    redirectUrl.pathname = req.path;
 
     const opts = {
       client_id: '403632071908-7v9k2mk0cdbqpg698hd1rsklt86rd4k8.apps.googleusercontent.com',
