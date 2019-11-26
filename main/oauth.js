@@ -8,8 +8,7 @@ const saveUser = async (data) => {
   const ds = new Datastore({ projectId: 'leftoverbytes' });
 
   const query = ds.createQuery('User').filter('email', data.email).limit(1);
-  console.log("Query", query);
-  const entities = await ds.runQuery(query);
+  const [entities, moreResults] = await ds.runQuery(query);
   console.log("Entities", entities);
   const entity = entities[0] || {
     key: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
