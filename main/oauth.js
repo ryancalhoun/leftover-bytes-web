@@ -19,12 +19,12 @@ const saveUser = async (data) => {
   const r = await ds.save(entity);
   console.log(r);
 
-  return entity.key;
+  return entity[ds.KEY];
 };
 
 Router.get('/user/:id', async (req, res) => {
   const ds = new Datastore({ projectId: 'leftoverbytes' });
-  const [entity] = await ds.get(req.params.id);
+  const [entity] = await ds.get(ds.key(['User', req.params.id]));
   console.log(entity);
   res.send(JSON.stringify(entity.data));
   res.end();
