@@ -11,7 +11,7 @@ const saveUser = async (data) => {
   const [entities, moreResults] = await ds.runQuery(query);
   console.log("Entities", entities);
   const entity = entities[0] || {
-    key: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
+    key: ds.key(['User', Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)]),
   };
   entity.data = data;
   console.log("Entity", entity);
