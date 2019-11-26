@@ -6,7 +6,7 @@ Router.get('/', async (req, res) => {
 });
 
 Router.get('/google', (req, res) => {
-  const url = new URL(`${req.protocol}://${req.hostname}/${req.originalUrl}`);
+  const url = new URL(`https://${req.hostname}${req.originalUrl}`);
   url.pathname += '/verify';
 
   const opts = {

@@ -15,13 +15,18 @@ module.exports = {
         target: 'https://leftoverbytes.appspot.com/',
       },
       '/oauth.*': {
-        target: 'https://20191126t155740-dot-leftoverbytes.appspot.com/',
+        target: 'https://20191126t163847-dot-leftoverbytes.appspot.com/',
         onProxyRes: res => {
           const loc = new URL(res.headers['location']);
           const redirect = loc.searchParams.get('redirect_uri');
+          console.log(loc);
+          console.log(redirect);
           redirect.protocol = 'http:';
-          redirect.hostname = 'localhost';
+          redirect.host = 'localhost';
+          console.log(redirect);
+    
           loc.searchParams.set('redirect_uri', redirect.toString());
+          console.log(loc);
           res.headers['location'] = loc.toString();
         },
       },
