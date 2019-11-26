@@ -6,11 +6,14 @@ Router.get('/', async (req, res) => {
 });
 
 Router.get('/google', (req, res) => {
+  const url = new URL(req.url);
+  url.pathname += '/verify';
+
   const opts = {
     client_id: '403632071908-7v9k2mk0cdbqpg698hd1rsklt86rd4k8.apps.googleusercontent.com',
     nonce: "" + Math.random(),
     response_type: 'code',
-    redirect_uri: `${req.hostname}/oauth`,
+    redirect_uri: url.toString(),
     scope: 'openid profile email',
     state: '',
     prompt: 'select_account',
