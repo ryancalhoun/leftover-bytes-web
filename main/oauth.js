@@ -2,10 +2,22 @@ const Router = require('express').Router();
 const qs = require('querystring');
 const https = require('https');
 const jwtDecode = require('jwt-decode');
+const {Datastore} = require('@google-cloud/datastore');
 
-Router.get('/', async (req, res) => {
+const saveUser = async (data) => {
+  const ds = new Datastore({ projectId: 'leftoverbytes' });
 
-});
+  const query = ds.createQuery('User').filter('email', data.email).limit(1);
+  const entities = await ds.runQuery(query);
+  const entity = entities[0] || {
+    key: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
+  };
+  entity.data = data;
+
+  await ds.save(entity);
+
+  return entity.key;
+};
 
 Router.get('/google', (req, res) => {
   const returnUrl = new URL(req.query.returnUrl);
@@ -52,22 +64,19 @@ Router.get('/google/verify', (req, res) => {
       }
     };
 
-    console.log(payload);
-
-    const onExchange = (data) => {
+    const onExchange = async (data) => {
       const userData = jwtDecode(data.id_token);
-      console.log(userData);
 
-      res.send(JSON.stringify(userData));
+      const id = await saveUser(userData);
+      res.cookie('user_id', id);
+      res.writeHead(302, {Location: returnUrl.toString()});
       res.end();
     };
 
     const exchange = https.request(opts, res => {
-      console.log("Exchange", res);
       let body = '';
       res.on('data', (chunk) => body += chunk);
       res.on('end', () => {
-        console.log(body);
         onExchange(JSON.parse(body));
       });
     });
