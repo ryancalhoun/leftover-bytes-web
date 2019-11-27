@@ -33,6 +33,7 @@
 import Modal from '@/components/Modal.vue';
 import qs from 'querystring';
 export default {
+  props: ['user'],
   data() {
     return {
       message: '',
@@ -53,8 +54,10 @@ export default {
       return Math.min(rows, 20);
     },
     focusin(e) {
-      e.target.blur();
-      this.login = true;
+      if(! this.user) {
+        e.target.blur();
+        this.login = true;
+      }
     },
     focus(e) {
       this.focused = true;

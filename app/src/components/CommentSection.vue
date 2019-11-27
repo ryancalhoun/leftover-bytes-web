@@ -1,7 +1,7 @@
 <template>
   <div class="comment-section" v-if="implemented">
     <h2> Discussion </h2>
-    <comment-box/>
+    <comment-box v-bind:user="user"/>
   </div>
 </template>
 
@@ -16,6 +16,7 @@ export default {
   data() {
     return {
       implemented: false,
+      user: null,
     }
   },
   async created() {
@@ -23,8 +24,15 @@ export default {
       return;
     }
 
+    const user_id = $cookies.get('user_id');
+    console.log(user_id);
+
+    const user = await fetch(`/oauth/user/${user_id}`);
+    this.user = await user.json();
+
     const response = await fetch(`/comments/${this.post}`);
     this.implemented = true;
+
     if(response.ok) {
       //const data = await response.json();
       //console.log(data);
