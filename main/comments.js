@@ -10,22 +10,24 @@ class Comments {
     const query = this.ds.createQuery('Comment').filter('post', this.post).order('created');
     const [comments, moreResults] = await this.ds.runQuery(query);
 
-    const ids = {};
-    comments.forEach(c => ++ids[c.user]);
+    if(comments.length > 0) {
+      const ids = {};
+      comments.forEach(c => ++ids[c.user]);
 
-    const keys = Object.keys(ids).map(id => this.ds.key(['User', id]));
-    const [users] = await this.ds.get(keys);
+      const keys = Object.keys(ids).map(id => this.ds.key(['User', id]));
+      const [users] = await this.ds.get(keys);
 
-    comments.forEach(c => {
-      keys.forEach((key, i) => {
-        if(key.name == c.user) {
-          c.name = users[i].name;
-          c.picture = users[i].picture;
-        } 
+      comments.forEach(c => {
+        keys.forEach((key, i) => {
+          if(key.name == c.user) {
+            c.name = users[i].name;
+            c.picture = users[i].picture;
+          } 
+        });
+
+        delete c.user;
       });
-
-      delete c.user;
-    });
+    }
 
     return comments;
   }
