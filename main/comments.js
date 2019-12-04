@@ -24,10 +24,12 @@ class Comments {
       data: {
         post: this.post,
         user: user_id,
+        message: message,
       },
     };
-    const r = await this.ds.save(comment);
+    const [r] = await this.ds.save(comment);
     console.log(r);
+    console.log(r.mutationResults[0]);
 
     return {};
   }
