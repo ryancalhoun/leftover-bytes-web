@@ -12,14 +12,17 @@ class Comments {
 
     const ids = {};
     comments.forEach(c => ++ids[c.user]);
+
     const keys = Object.keys(ids).map(id => this.ds.key(['User', id]));
-    console.log(keys);
     const users = await this.ds.get(keys);
+    console.log(users);
+
     comments.forEach(c => {
-      users.forEach(user => {
-        if(user[Datastore.KEY].name == c.user_id) {
-          c.name = c.name;
-          c.picture = c.picture;
+      keys.forEach((key, i) => {
+        console.log(key, i);
+        if(key.name == c.user_id) {
+          c.name = users[i].name;
+          c.picture = users[i].picture;
         } 
       });
 
