@@ -17,18 +17,14 @@ class Comments {
     const [users] = await this.ds.get(keys);
 
     comments.forEach(c => {
-      console.log("Update comment", c);
       keys.forEach((key, i) => {
-        console.log("Try this key", key, key.name, c.user, i);
-        console.log("With this user", users[i]);
         if(key.name == c.user) {
           c.name = users[i].name;
           c.picture = users[i].picture;
         } 
-        console.log("Updated?", (key.name == c.user), c);
       });
 
-      //delete c.user;
+      delete c.user;
     });
 
     return comments;
@@ -50,7 +46,8 @@ class Comments {
     };
     const [r] = await this.ds.save(comment);
     console.log(r);
-    console.log(r.mutationResults[0]);
+    console.log(r.mutationResults[0].key);
+    console.log(r.mutationResults[0].key.path);
 
     return {};
   }
