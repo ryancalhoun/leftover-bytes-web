@@ -24,11 +24,11 @@ export default {
       return;
     }
 
-    const user_id = $cookies.get('user_id');
-    console.log(user_id);
-
-    const user = await fetch(`/oauth/user/${user_id}`);
-    this.user = await user.json();
+    const user_id = this.$cookies.get('user_id');
+    if(user_id) {
+      const user = await fetch(`/oauth/user/${user_id}`);
+      this.user = await user.json();
+    }
 
     const response = await fetch(`/comments/${this.post}`);
     this.implemented = true;

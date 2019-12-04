@@ -32,6 +32,7 @@ Router.get('/google', (req, res) => {
   const returnUrl = new URL(req.query.returnUrl);
   const redirectUrl = new URL(returnUrl.toString());
   redirectUrl.pathname = req.baseUrl + req.path + '/verify';
+  redirectUrl.hash = "";
 
   const opts = {
     client_id: '403632071908-7v9k2mk0cdbqpg698hd1rsklt86rd4k8.apps.googleusercontent.com',
@@ -54,6 +55,7 @@ Router.get('/google/verify', (req, res) => {
   if(code) {
     const redirectUrl = new URL(returnUrl.toString());
     redirectUrl.pathname = req.baseUrl + req.path;
+    redirectUrl.hash = "";
 
     const payload = {
       client_id: '403632071908-7v9k2mk0cdbqpg698hd1rsklt86rd4k8.apps.googleusercontent.com',
@@ -77,7 +79,7 @@ Router.get('/google/verify', (req, res) => {
       const userData = jwtDecode(data.id_token);
 
       const id = await saveUser(userData);
-      res.cookie('user_id', id);
+      res.cookie('user_id', id, { maxAge: 30*24*3600*1000 });
       res.writeHead(302, {Location: returnUrl.toString()});
       res.end();
     };

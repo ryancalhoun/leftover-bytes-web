@@ -1,5 +1,9 @@
 <template>
   <div class="comment-box">
+    <div class="user" v-if="user">
+      <img v-bind:src="user.picture"/>
+      <span> {{ user.name }} </span>
+    </div>
     <textarea
       placeholder="Leave a comment"
       v-bind:rows="rows()"
@@ -77,7 +81,9 @@ export default {
                          .trim();
     },
     google() {
-      window.location = `/oauth/google?returnUrl=${window.location.href}`;
+      const returnUrl = new URL(window.location.href);
+      returnUrl.hash = "comment";
+      window.location = `/oauth/google?returnUrl=${encodeURIComponent(returnUrl.toString())}`;
     },
   }
 }
@@ -112,6 +118,24 @@ export default {
     .fa-google {
       width: 20px;
       margin-right: 12px;
+    }
+  }
+  .user {
+    padding: 8px 0;
+    img, span {
+      display: inline-block;
+      vertical-align: bottom;
+      height: 24px;
+    }
+    img {
+      border-radius: 50%;
+      width: 24px;
+      margin: 0;
+    }
+    span {
+      padding: 0 8px;
+      line-height: 24px;
+      color: #999;
     }
   }
   textarea {
