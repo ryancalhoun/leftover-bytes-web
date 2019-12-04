@@ -14,7 +14,7 @@ class Comments {
     comments.forEach(c => ++ids[c.user]);
 
     const keys = Object.keys(ids).map(id => this.ds.key(['User', id]));
-    const users = await this.ds.get(keys);
+    const [users] = await this.ds.get(keys);
 
     comments.forEach(c => {
       console.log("Update comment", c);
