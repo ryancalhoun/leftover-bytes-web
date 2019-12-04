@@ -36,20 +36,15 @@ class Comments {
     }
 
     const key = this.ds.key(['Comment']);
-    const comment = {
-      key: key,
-      data: {
-        post: this.post,
-        user: user_id,
-        message: message,
-      },
+    const data = {
+      post: this.post,
+      user: user_id,
+      message: message,
     };
-    const [r] = await this.ds.save(comment);
-    console.log(r);
-    console.log(r.mutationResults[0].key);
-    console.log(r.mutationResults[0].key.path);
+    const [r] = await this.ds.save({ key: key, data: data });
+    const id = r.mutationResults[0].key.path[0].id;
 
-    return {};
+    return Object.assign({ id: id }, data);
   }
   async update(id, message) {
   }
