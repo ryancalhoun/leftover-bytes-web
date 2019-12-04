@@ -32,7 +32,7 @@
         <text-field v-bind:text="doc.results[0].data.body"/>
         <div class="more">
           <related v-bind:tags="doc.results[0].data.tags"/>
-          <comment-section v-bind:post="doc.results[0].id"/>
+          <comment-section v-bind:post="doc.results[0].id" v-bind:hash="hash"/>
         </div>
       </div>
     </document-pane>
@@ -54,7 +54,8 @@ export default {
   name: 'Post',
   data() {
     return {
-      fetchLinks: ['author.name', 'author.photo']
+      fetchLinks: ['author.name', 'author.photo'],
+      hash: window.location.hash.substr(1),
     }
   },
   components: {
@@ -74,6 +75,8 @@ export default {
         const url = "/posts/" + date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + post.uid;
         this.$router.replace(url);
         tracking.update(url);
+
+        window.location.hash = '';
       }
       //this.$nextTick(() => (window.adsbygoogle || []).push({}));
     }

@@ -9,14 +9,12 @@ const saveUser = async (data) => {
 
   const query = ds.createQuery('User').filter('email', data.email).limit(1);
   const [entities, moreResults] = await ds.runQuery(query);
-  console.log("Entities", entities);
   const entity = entities[0] || {
     key: ds.key(['User', Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)]),
   };
   entity.data = data;
 
   const r = await ds.save(entity);
-  console.log(r);
 
   return entity[Datastore.KEY].name;
 };

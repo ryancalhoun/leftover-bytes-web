@@ -6,6 +6,7 @@
     </div>
     <textarea
       placeholder="Leave a comment"
+      ref="input"
       v-bind:rows="rows()"
       v-model="message"
       v-on:focusin="focusin($event)"
@@ -13,7 +14,12 @@
       v-on:blur="blur($event)"
     ></textarea>
 
-    <button class="submit" v-on:click="submit" v-bind:disabled="!message.trim()">
+    <button
+      class="submit"
+      v-on:click="submit($event)"
+      v-on:mousedown.prevent
+      v-on:touchstart.prevent
+      v-bind:disabled="!message.trim()">
       <fa icon="paper-plane"/>
     </button>
 
@@ -37,7 +43,7 @@
 import Modal from '@/components/Modal.vue';
 import qs from 'querystring';
 export default {
-  props: ['user'],
+  props: ['post', 'user', 'hash'],
   data() {
     return {
       message: '',
@@ -47,6 +53,12 @@ export default {
   },
   components: {
     Modal,
+  },
+  mounted() {
+    if(this.hash == 'comment') {
+      this.$refs.input.scrollIntoView();
+      this.$refs.input.focus();
+    }
   },
   methods: {
     rows() {
@@ -70,7 +82,21 @@ export default {
       this.trim();
       this.focused = false;
     },
-    submit() {
+    async submit(e) {
+      this.trim();
+      const response = await fetch(`/comments/${this.post}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_id: this.user.user_id,
+          message: this.message,
+        })
+      });
+
+      this.message = '';
+      this.$refs.input.blur();
     },
     trim() {
       this.message = this.message

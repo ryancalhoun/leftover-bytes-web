@@ -1,7 +1,7 @@
 <template>
   <div class="comment-section" v-if="implemented">
     <h2> Discussion </h2>
-    <comment-box v-bind:user="user"/>
+    <comment-box v-bind:post="post" v-bind:user="user" v-bind:hash="hash"/>
   </div>
 </template>
 
@@ -9,7 +9,7 @@
 import CommentBox from '@/components/CommentBox.vue';
 
 export default {
-  props: ['post'],
+  props: ['post', 'hash'],
   components: {
     CommentBox,
   },
@@ -27,7 +27,7 @@ export default {
     const user_id = this.$cookies.get('user_id');
     if(user_id) {
       const user = await fetch(`/oauth/user/${user_id}`);
-      this.user = await user.json();
+      this.user = Object.assign({user_id: user_id}, await user.json());
     }
 
     const response = await fetch(`/comments/${this.post}`);
