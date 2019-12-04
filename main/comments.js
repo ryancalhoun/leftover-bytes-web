@@ -16,9 +16,6 @@ class Comments {
     const keys = Object.keys(ids).map(id => this.ds.key(['User', id]));
     const users = await this.ds.get(keys);
 
-    console.log("Comments", comments);
-    console.log("Keys", keys);
-
     comments.forEach(c => {
       console.log("Update comment", c);
       keys.forEach((key, i) => {
@@ -28,6 +25,7 @@ class Comments {
           c.name = users[i].name;
           c.picture = users[i].picture;
         } 
+        console.log("Updated?", (key.name == c.user), c);
       });
 
       //delete c.user;
