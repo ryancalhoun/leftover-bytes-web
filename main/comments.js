@@ -40,6 +40,7 @@ class Comments {
       post: this.post,
       user: user_id,
       message: message,
+      created: new Date().getTime(),
     };
     const [r] = await this.ds.save({ key: key, data: data });
     const id = r.mutationResults[0].key.path[0].id;
