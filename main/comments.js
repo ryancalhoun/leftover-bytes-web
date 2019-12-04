@@ -10,6 +10,24 @@ class Comments {
     const query = this.ds.createQuery('Comment').filter('post', this.post);
     const [comments, moreResults] = await this.ds.runQuery(query);
 
+    const users = {};
+    comments.each(c => ++users[c.user]);
+    const keys = [];
+    for(id in users) {
+      keys.push(this.ds.key(['User', id]));
+    }
+    const users = await this.ds.get(keys);
+    comments.each(c => {
+      users.each(user => {
+        if(user[Datastore.KEY].name == c.user_id) {
+          c.name = c.name;
+          c.picture = c.picture;
+        } 
+      });
+
+      delete c.user;
+    });
+
     return comments;
   }
   async create(user_id, message) {
