@@ -12,10 +12,8 @@ class Comments {
 
     const ids = {};
     comments.forEach(c => ++ids[c.user]);
-    const keys = [];
-    for(id in ids) {
-      keys.push(this.ds.key(['User', id]));
-    }
+    const keys = Object.keys(ids).map(id => this.ds.key(['User', id]));
+    console.log(keys);
     const users = await this.ds.get(keys);
     comments.forEach(c => {
       users.forEach(user => {
