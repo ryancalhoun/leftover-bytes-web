@@ -7,7 +7,7 @@ class Comments {
     this.ds = new Datastore({ projectId: 'leftoverbytes' });
   }
   async get() {
-    const query = this.ds.createQuery('Comment').filter('post', this.post);
+    const query = this.ds.createQuery('Comment').filter('post', this.post).order('created');
     const [comments, moreResults] = await this.ds.runQuery(query);
 
     const ids = {};

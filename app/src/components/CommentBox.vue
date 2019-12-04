@@ -1,9 +1,6 @@
 <template>
   <div class="comment-box">
-    <div class="user" v-if="user">
-      <img v-bind:src="user.picture"/>
-      <span> {{ user.name }} </span>
-    </div>
+    <user v-bind:user="user"/>
     <textarea
       placeholder="Leave a comment"
       ref="input"
@@ -41,7 +38,9 @@
 
 <script>
 import Modal from '@/components/Modal.vue';
+import User from '@/components/User.vue';
 import qs from 'querystring';
+
 export default {
   props: ['post', 'user', 'hash'],
   data() {
@@ -53,6 +52,7 @@ export default {
   },
   components: {
     Modal,
+    User,
   },
   mounted() {
     if(this.hash == 'comment') {
@@ -97,6 +97,8 @@ export default {
 
       this.message = '';
       this.$refs.input.blur();
+
+      this.$emit('post', await response.json());
     },
     trim() {
       this.message = this.message
@@ -144,24 +146,6 @@ export default {
     .fa-google {
       width: 20px;
       margin-right: 12px;
-    }
-  }
-  .user {
-    padding: 8px 0;
-    img, span {
-      display: inline-block;
-      vertical-align: bottom;
-      height: 24px;
-    }
-    img {
-      border-radius: 50%;
-      width: 24px;
-      margin: 0;
-    }
-    span {
-      padding: 0 8px;
-      line-height: 24px;
-      color: #999;
     }
   }
   textarea {

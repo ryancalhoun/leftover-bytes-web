@@ -1,25 +1,37 @@
 <template>
   <div class="comment-section" v-if="implemented">
     <h2> Discussion </h2>
-    <comment-box v-bind:post="post" v-bind:user="user" v-bind:hash="hash"/>
+
+    <div class="comment" v-bind:key="index" v-for="(comment, index) in comments">
+      <div class="author">
+        <user v-bind:user='{ name: comment.name, picture: comment.picture }'/>
+        <div class="date">{{ new Date(comment.created).toLocaleDateString() }}</div>
+      </div>
+      {{ comment.message }}
+    </div>
+
+    <comment-box v-bind:post="post" v-bind:user="user" v-bind:hash="hash" v-on:post="update"/>
   </div>
 </template>
 
 <script>
 import CommentBox from '@/components/CommentBox.vue';
+import User from '@/components/User.vue';
 
 export default {
   props: ['post', 'hash'],
   components: {
     CommentBox,
+    User,
   },
   data() {
     return {
       implemented: false,
+      comments: [],
       user: null,
     }
   },
-  async created() {
+  async mounted() {
     if(process.env.NODE_ENV === 'production') {
       return;
     }
@@ -34,10 +46,17 @@ export default {
     this.implemented = true;
 
     if(response.ok) {
-      //const data = await response.json();
-      //console.log(data);
+      this.comments = await response.json();
     }
   },
+  methods: {
+    update(newComment) {
+      newComment.name = this.user.name;
+      newComment.picture = this.user.picture;
+      this.comments.push(newComment);
+
+    }    
+  }
 }
 </script>
 
@@ -49,5 +68,24 @@ h2 {
   border-top: 1px solid #ddd;
   margin: 40px 0;
   padding: 40px 0;
+
+  .author {
+    display: flex;
+    align-items: center;
+
+    .user, .date {
+      flex: 1;
+    }
+
+    .date {
+      text-align: right;
+      font-size: 14px;
+      color: cornflowerblue;
+    }
+  }
+
+  .comment {
+    margin-bottom: 40px;
+  }
 }
 </style>

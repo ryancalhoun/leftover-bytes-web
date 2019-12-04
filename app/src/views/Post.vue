@@ -29,7 +29,9 @@
         <img v-bind:src="doc.results[0].data.hero.url" v-bind:alt="doc.results[0].data.hero.alt"/>
       </div>
       <div class="body">
-        <text-field v-bind:text="doc.results[0].data.body"/>
+        <div class="text">
+          <text-field v-bind:text="doc.results[0].data.body"/>
+        </div>
         <div class="more">
           <related v-bind:tags="doc.results[0].data.tags"/>
           <comment-section v-bind:post="doc.results[0].id" v-bind:hash="hash"/>
@@ -92,23 +94,25 @@ export default {
   }
 }
 .body {
-  &::v-deep {
-    img {
-      max-width: 100%;
-      margin: 20px auto;
-      display: block;
-    }
-    pre {
-      background: #eee;
-      padding: 20px 16px;
-      font-size: 14px;
-      overflow: auto;
-      @media screen and (min-width: 768px) {
-        padding: 20px 40px;
+  .text {
+    &::v-deep {
+      img {
+        max-width: 100%;
+        margin: 20px auto;
+        display: block;
       }
-    }
-    a {
-      color: #af4213;
+      pre {
+        background: #eee;
+        padding: 20px 16px;
+        font-size: 14px;
+        overflow: auto;
+        @media screen and (min-width: 768px) {
+          padding: 20px 40px;
+        }
+      }
+      a {
+        color: #af4213;
+      }
     }
   }
 
