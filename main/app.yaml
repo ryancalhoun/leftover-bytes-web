@@ -18,3 +18,8 @@ handlers:
   script: auto
 env_variables:
   STORAGE_BUCKET: leftoverbytes.appspot.com
+indexes:
+- kind: Comment
+  properties:
+  - name: post
+  - name: created
