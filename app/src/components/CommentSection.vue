@@ -7,7 +7,7 @@
         <user v-bind:user='{ name: comment.name, picture: comment.picture }'/>
         <div class="date">{{ new Date(comment.created).toLocaleDateString() }}</div>
       </div>
-      {{ comment.message }}
+      <div class="message" v-html="render(comment.message)"/>
     </div>
 
     <comment-box v-bind:post="post" v-bind:user="user" v-bind:hash="hash" v-on:post="update"/>
@@ -55,7 +55,10 @@ export default {
       newComment.picture = this.user.picture;
       this.comments.push(newComment);
 
-    }    
+    },
+    render(message) {
+      return message.split('\n').map(p => `<p>${p}</p>`).join('');
+    }
   }
 }
 </script>
@@ -69,23 +72,26 @@ h2 {
   margin: 40px 0;
   padding: 40px 0;
 
-  .author {
-    display: flex;
-    align-items: center;
-
-    .user, .date {
-      flex: 1;
-    }
-
-    .date {
-      text-align: right;
-      font-size: 14px;
-      color: cornflowerblue;
-    }
-  }
-
   .comment {
     margin-bottom: 40px;
+
+    .author {
+      display: flex;
+      align-items: center;
+
+      .user, .date {
+        flex: 1;
+      }
+
+      .date {
+        text-align: right;
+        font-size: 14px;
+        color: cornflowerblue;
+      }
+    }
+
+    .message {
+    }
   }
 }
 </style>
