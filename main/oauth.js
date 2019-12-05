@@ -12,17 +12,23 @@ const saveUser = async (data) => {
     ds.createQuery('User').filter('facebook_id', data.facebook_id).limit(1);
   const [entities, moreResults] = await ds.runQuery(query);
 
+  let keyName;
   if(entities[0]) {
-    return entities[0][Datastore.KEY].name;
+    const entity = entities[0];
+    keyName = entity[Datastore.KEY].name;
+
+    Object.assign(entity, data);
+    await ds.save({ key: keyName, data: entity });
+
   } else {
-    const keyName = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    keyName = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
     const entity = {
       key: ds.key(['User', keyName]),
       data: data,
     };
-    const r = await ds.save(entity);
-    return keyName;
+    await ds.save(entity);
   }
+  return keyName;
 };
 
 const readJson = (cb) => {
