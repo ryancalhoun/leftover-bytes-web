@@ -170,7 +170,7 @@ export default {
     padding: 12px 20px;
     margin: 1px 0;
 
-    svg.fa {
+    svg.fa-w-16 {
       width: 20px;
       margin-right: 12px;
     }

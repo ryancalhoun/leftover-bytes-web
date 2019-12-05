@@ -7,7 +7,9 @@ const {Datastore} = require('@google-cloud/datastore');
 const saveUser = async (data) => {
   const ds = new Datastore({ projectId: 'leftoverbytes' });
 
-  const query = ds.createQuery('User').filter('email', data.email).limit(1);
+  const query = data.email ?
+    ds.createQuery('User').filter('email', data.email).limit(1) :
+    ds.createQuery('User').filter('facebook_id', data.facebook_id).limit(1);
   const [entities, moreResults] = await ds.runQuery(query);
 
   if(entities[0]) {
@@ -21,6 +23,14 @@ const saveUser = async (data) => {
     const r = await ds.save(entity);
     return keyName;
   }
+};
+
+const readJson = (res, cb) => {
+  let body = '';
+  res.on('data', (chunk) => body += chunk);
+  res.on('end', () => {
+    cb(JSON.parse(body));
+  });
 };
 
 Router.get('/user/:id', async (req, res) => {
@@ -86,13 +96,7 @@ Router.get('/google/verify', (req, res) => {
       res.end();
     };
 
-    const exchange = https.request(opts, res => {
-      let body = '';
-      res.on('data', (chunk) => body += chunk);
-      res.on('end', () => {
-        onExchange(JSON.parse(body));
-      });
-    });
+    const exchange = https.request(opts, readJson(onExchange));
     exchange.write(qs.stringify(payload));
     exchange.end();
   } else {
@@ -134,33 +138,28 @@ Router.get('/facebook/verify', (req, res) => {
       redirect_uri: redirectUrl.toString(),
     };
 
-    const opts = {
-      hostname: 'graph.facebook.com',
-      port: 443,
-      path: `/v5.0/oauth/access_token?${qs.stringify(params)}`,
-      method: 'GET',
-    };
-
-    const onExchange = async (data) => {
-      console.log("Facebook exchange", data);
-/*
-      const userData = jwtDecode(data.id_token);
-
+    const onInfo = async (data) => {
+      const userData = {
+        facebook_id: data.id,
+        name: data.name,
+        email: data.email,
+        picture: data.picture.url,
+      };
       const id = await saveUser(userData);
       res.cookie('user_id', id, { maxAge: 30*24*3600*1000 });
-*/
       res.writeHead(302, {Location: returnUrl.toString()});
       res.end();
     };
 
-    const exchange = https.request(opts, res => {
-      let body = '';
-      res.on('data', (chunk) => body += chunk);
-      res.on('end', () => {
-        onExchange(JSON.parse(body));
-      });
-    });
-    exchange.end();
+    const onExchange = async (data) => {
+      const params = {
+        access_token: data.access_token,
+        fields: 'name,email,picture'
+      };
+      https.get(`https://graph.facebook.com/me?${qs.stringify(params)}`, readJson(onInfo));
+    };
+
+    https.get(`https://graph.facebook.com/v5.0/oauth/access_token?${qs.stringify(params)}`, readJson(onExchange));
   } else {
 
   }
