@@ -100,4 +100,70 @@ Router.get('/google/verify', (req, res) => {
   }
 });
 
+Router.get('/facebook', (req, res) => {
+  const returnUrl = new URL(req.query.returnUrl);
+  const redirectUrl = new URL(returnUrl.toString());
+  redirectUrl.pathname = req.baseUrl + req.path + '/verify';
+  redirectUrl.hash = "";
+
+  const opts = {
+    client_id: '735455096936712',
+    response_type: 'code',
+    redirect_uri: redirectUrl.toString(),
+    scope: 'email',
+    state: returnUrl.toString(),
+  };
+
+  res.writeHead(302, {Location: `https://www.facebook.com/v5.0/dialog/oauth?${qs.stringify(opts)}`});
+  res.end();
+});
+
+Router.get('/facebook/verify', (req, res) => {
+  const code = req.query.code;
+  const returnUrl = new URL(req.query.state);
+
+  if(code) {
+    const redirectUrl = new URL(returnUrl.toString());
+    redirectUrl.pathname = req.baseUrl + req.path;
+    redirectUrl.hash = "";
+
+    const params = {
+      client_id: '735455096936712',
+      client_secret: '7d82a60712a4db1d42f1cce6a5a659b8',
+      code: code,
+      redirect_uri: redirectUrl.toString(),
+    };
+
+    const opts = {
+      hostname: 'graph.facebook.com',
+      port: 443,
+      path: `/v5.0/oauth/access_token?${qs.stringify(params)}`,
+      method: 'GET',
+    };
+
+    const onExchange = async (data) => {
+      console.log("Facebook exchange", data);
+/*
+      const userData = jwtDecode(data.id_token);
+
+      const id = await saveUser(userData);
+      res.cookie('user_id', id, { maxAge: 30*24*3600*1000 });
+*/
+      res.writeHead(302, {Location: returnUrl.toString()});
+      res.end();
+    };
+
+    const exchange = https.request(opts, res => {
+      let body = '';
+      res.on('data', (chunk) => body += chunk);
+      res.on('end', () => {
+        onExchange(JSON.parse(body));
+      });
+    });
+    exchange.end();
+  } else {
+
+  }
+});
+
 export { Router }

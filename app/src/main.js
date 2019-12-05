@@ -13,6 +13,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import {
   faGoogle,
+  faFacebook,
 } from '@fortawesome/free-brands-svg-icons'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -22,7 +23,8 @@ library.add(
   faTimes,
   faTimesCircle,
   faPaperPlane,
-  faGoogle
+  faGoogle,
+  faFacebook
 );
 
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'

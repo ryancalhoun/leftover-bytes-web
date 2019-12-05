@@ -29,8 +29,12 @@
       <h4> Join the Conversation </h4>
       <p> Sign up to comment. </p>
 
-      <button class="google" v-on:click="google()">
+      <button class="connect google" v-on:click="google()">
         <fa v-bind:icon='["fab", "google"]'/> Connect with Google
+      </button>
+
+      <button class="connect facebook" v-on:click="facebook()">
+        <fa v-bind:icon='["fab", "facebook"]'/> Connect with Facebook
       </button>
 
       <p> <i>
@@ -61,10 +65,10 @@ export default {
   },
   mounted() {
     if(this.hash == 'comment') {
-      this.$nextTick(() => {
+      setTimeout(() => {
         this.$refs.input.scrollIntoView();
         this.$refs.input.focus();
-      });
+      }, 100);
     }
   },
   methods: {
@@ -120,6 +124,11 @@ export default {
       returnUrl.hash = "comment";
       window.location = `/oauth/google?returnUrl=${encodeURIComponent(returnUrl.toString())}`;
     },
+    facebook() {
+      const returnUrl = new URL(window.location.href);
+      returnUrl.hash = "comment";
+      window.location = `/oauth/facebook?returnUrl=${encodeURIComponent(returnUrl.toString())}`;
+    },
   }
 }
 </script>
@@ -152,17 +161,24 @@ export default {
       color: #748300;
     }
   }
-  button.google {
+  button.connect {
     width: 100%;
     text-align: left;
     color: white;
     cursor: pointer;
-    background: #4285F4;
     border: none;
     padding: 12px 20px;
-    .fa-google {
+    margin: 1px 0;
+
+    svg.fa {
       width: 20px;
       margin-right: 12px;
+    }
+    &.google {
+      background: #4285F4;
+    }
+    &.facebook {
+      background: #4267B2;
     }
   }
   textarea {
