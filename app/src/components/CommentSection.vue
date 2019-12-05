@@ -1,5 +1,5 @@
 <template>
-  <div class="comment-section" v-if="implemented">
+  <div class="comment-section">
     <h2> Discussion </h2>
 
     <div class="comment" v-bind:key="index" v-for="(comment, index) in comments">
@@ -36,16 +36,11 @@ export default {
   },
   data() {
     return {
-      implemented: false,
       comments: [],
       user: null,
     }
   },
   async mounted() {
-    if(process.env.NODE_ENV === 'production') {
-      return;
-    }
-
     const user_id = this.$cookies.get('user_id');
     if(user_id) {
       const user = await fetch(`/oauth/user/${user_id}`);
@@ -53,7 +48,6 @@ export default {
     }
 
     const response = await fetch(`/comments/${this.post}`);
-    this.implemented = true;
 
     if(response.ok) {
       this.comments = await response.json();
