@@ -146,10 +146,10 @@ Router.get('/facebook/verify', (req, res) => {
       redirect_uri: redirectUrl.toString(),
     };
 
-    const dig = (obj, ...keys) = > {
+    const dig = (obj, ...keys) => {
       keys.forEach(key => obj = obj && obj[key]);
       return obj;
-    }
+    };
     const onInfo = async (data) => {
       const userData = {
         facebook_id: data.id,
