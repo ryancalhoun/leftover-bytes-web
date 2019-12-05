@@ -18,5 +18,8 @@ steps:
   args: ['-m', 'cp', '-r', '.', 'gs://leftoverbytes-content']
   dir: app/dist
 - name: gcr.io/cloud-builders/gcloud
+  args: ['datastore', 'indexes', 'create', 'index.yaml']
+  dir: main
+- name: gcr.io/cloud-builders/gcloud
   args: ['app', 'deploy', '--no-promote']
   dir: main
