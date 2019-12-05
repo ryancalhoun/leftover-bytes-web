@@ -20,6 +20,7 @@
       v-bind:hash="hash"
       v-on:post="update"
       v-on:signout="signout"
+      v-if="ready"
     />
   </div>
 </template>
@@ -36,6 +37,7 @@ export default {
   },
   data() {
     return {
+      ready: false,
       comments: [],
       user: null,
     }
@@ -46,12 +48,12 @@ export default {
       const user = await fetch(`/oauth/user/${user_id}`);
       this.user = Object.assign({user_id: user_id}, await user.json());
     }
-
     const response = await fetch(`/comments/${this.post}`);
 
     if(response.ok) {
       this.comments = await response.json();
     }
+    this.ready = true;
   },
   methods: {
     signout() {
