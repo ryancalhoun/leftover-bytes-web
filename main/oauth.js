@@ -9,14 +9,18 @@ const saveUser = async (data) => {
 
   const query = ds.createQuery('User').filter('email', data.email).limit(1);
   const [entities, moreResults] = await ds.runQuery(query);
-  const entity = entities[0] || {
-    key: ds.key(['User', Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)]),
-  };
-  entity.data = data;
 
-  const r = await ds.save(entity);
-
-  return entity[Datastore.KEY].name;
+  if(entities[0]) {
+    return entities[0][Datastore.KEY].name;
+  } else {
+    const keyName = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    const entity = {
+      key: ds.key(['User', keyName]),
+      data: data,
+    };
+    const r = await ds.save(entity);
+    return keyName;
+  }
 };
 
 Router.get('/user/:id', async (req, res) => {
@@ -94,8 +98,6 @@ Router.get('/google/verify', (req, res) => {
   } else {
 
   }
-
-  
 });
 
 export { Router }

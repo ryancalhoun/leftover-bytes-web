@@ -1,6 +1,11 @@
 <template>
   <div class="comment-box">
-    <user v-bind:user="user"/>
+    <div class="auth" v-if="user">
+      <user v-bind:user="user"/>
+      <button v-on:click="$emit('signout')">
+        (sign out)
+      </button>
+    </div>
     <textarea
       placeholder="Leave a comment"
       ref="input"
@@ -56,8 +61,10 @@ export default {
   },
   mounted() {
     if(this.hash == 'comment') {
-      this.$refs.input.scrollIntoView();
-      this.$refs.input.focus();
+      this.$nextTick(() => {
+        this.$refs.input.scrollIntoView();
+        this.$refs.input.focus();
+      });
     }
   },
   methods: {
@@ -133,6 +140,16 @@ export default {
     &:not(:disabled) {
       cursor: pointer;
       color: green;
+    }
+  }
+  .auth {
+    display: flex;
+    align-items: center;
+    button {
+      background: none;
+      border: 0;
+      cursor: pointer;
+      color: #748300;
     }
   }
   button.google {

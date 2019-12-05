@@ -7,10 +7,20 @@
         <user v-bind:user='{ name: comment.name, picture: comment.picture }'/>
         <div class="date">{{ new Date(comment.created).toLocaleDateString() }}</div>
       </div>
-      <div class="message" v-html="render(comment.message)"/>
+      <div class="message">
+        <p v-bind:key="index" v-for="(line, index) in linesOf(comment.message)">
+          {{ line }}
+        </p>
+      </div>
     </div>
 
-    <comment-box v-bind:post="post" v-bind:user="user" v-bind:hash="hash" v-on:post="update"/>
+    <comment-box
+      v-bind:post="post"
+      v-bind:user="user"
+      v-bind:hash="hash"
+      v-on:post="update"
+      v-on:signout="signout"
+    />
   </div>
 </template>
 
@@ -50,14 +60,18 @@ export default {
     }
   },
   methods: {
+    signout() {
+      this.$cookies.remove('user_id');
+      this.user = null;
+    },
     update(newComment) {
       newComment.name = this.user.name;
       newComment.picture = this.user.picture;
       this.comments.push(newComment);
 
     },
-    render(message) {
-      return message.split('\n').map(p => `<p>${p}</p>`).join('');
+    linesOf(message) {
+      return message.split('\n');
     }
   }
 }
@@ -91,6 +105,9 @@ h2 {
     }
 
     .message {
+      p:first-child {
+        margin-top: 0;
+      }
     }
   }
 }
