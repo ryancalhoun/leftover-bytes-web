@@ -25,12 +25,14 @@ const saveUser = async (data) => {
   }
 };
 
-const readJson = (res, cb) => {
-  let body = '';
-  res.on('data', (chunk) => body += chunk);
-  res.on('end', () => {
-    cb(JSON.parse(body));
-  });
+const readJson = (cb) => {
+  return (res) => {
+    let body = '';
+    res.on('data', (chunk) => body += chunk);
+    res.on('end', () => {
+      cb(JSON.parse(body));
+    });
+  };
 };
 
 Router.get('/user/:id', async (req, res) => {
