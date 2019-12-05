@@ -15,10 +15,11 @@ const saveUser = async (data) => {
   let keyName;
   if(entities[0]) {
     const entity = entities[0];
-    keyName = entity[Datastore.KEY].name;
+    const key = entity[Datastore.KEY];
+    keyName = key.name;
 
     Object.assign(entity, data);
-    await ds.save({ key: keyName, data: entity });
+    await ds.save({ key: key, data: entity });
 
   } else {
     keyName = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
