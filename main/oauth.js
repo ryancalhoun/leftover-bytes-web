@@ -47,6 +47,7 @@ const saveUser = async (data) => {
 };
 
 const readJson = (cb) => {
+  console.log("READ JSON!");
   return (res) => {
     let body = '';
     res.on('data', (chunk) => body += chunk);
@@ -78,6 +79,7 @@ const post = async (url, body, headers) => {
     headers: headers,
   };
   return new Promise((resolve, reject) => {
+    console.log(`POST ${url} with headers ${headers}`);
     const call = https.request(opts, readJson(resolve));
     call.on('error', error => {
       console.log(`Client error on GET ${url}: ${error}`);
