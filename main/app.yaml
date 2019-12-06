@@ -23,5 +23,8 @@ env_variables:
   FACEBOOK_LOGIN_URL: https://www.facebook.com/v5.0/dialog/oauth
   FACEBOOK_TOKEN_URL: https://graph.facebook.com/v5.0/oauth/access_token
   FACEBOOK_INFO_URL: https://graph.facebook.com/me
+  GITHUB_LOGIN_URL: https://github.com/login/oauth/authorize
+  GITHUB_TOKEN_URL: https://github.com/login/oauth/access_token
+  GITHUB_INFO_URL: https://api.github.com/user
   NOTIFY_RECIPIENT: Ryan Calhoun <ryan@leftoverbytes.com>
   NOTIFY_SENDER: Leftover Bytes <notify@leftoverbytes.com>

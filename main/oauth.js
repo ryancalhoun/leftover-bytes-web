@@ -13,9 +13,17 @@ const secret = async (name) => {
 const saveUser = async (data) => {
   const ds = new Datastore({ projectId: 'leftoverbytes' });
 
-  const query = data.email ?
-    ds.createQuery('User').filter('email', data.email).limit(1) :
-    ds.createQuery('User').filter('facebook_id', data.facebook_id).limit(1);
+  const filterKey = (() => {
+    if(data.email) {
+      return 'email';
+    } else if(data.facebook_id) {
+      return 'facebook_id';
+    } else if(data.github_id) {
+      return 'github_id';
+    }
+  })();
+
+  const query = ds.createQuery('User').filter(filterKey, data[filterKey]).limit(1) :
   const [entities, moreResults] = await ds.runQuery(query);
 
   let keyName;
@@ -48,9 +56,9 @@ const readJson = (cb) => {
   };
 };
 
-const get = async (url, params) => {
+const get = async (url, params, headers) => {
   return new Promise((resolve, reject) => {
-    const call = https.get(`${url}?${qs.stringify(params)}`, readJson(resolve));
+    const call = https.get(`${url}?${qs.stringify(params)}`, { headers: headers || {} }, readJson(resolve));
     call.on('error', error => {
       console.log(`Client error on GET ${url}: ${error}`);
       reject(error);
@@ -193,6 +201,71 @@ Router.get('/facebook/verify', async (req, res) => {
       name: info.name,
       email: info.email,
       picture: dig(info.picture, 'data', 'url'),
+    };
+
+    const id = await saveUser(userData);
+    res.cookie('user_id', id, { maxAge: 30*24*3600*1000 });
+    res.writeHead(302, {Location: returnUrl.toString()});
+    res.end();
+  } else {
+
+  }
+});
+
+Router.get('/github', async (req, res) => {
+  const returnUrl = new URL(req.query.returnUrl);
+  const redirectUrl = new URL(returnUrl.toString());
+  redirectUrl.pathname = req.baseUrl + req.path + '/verify';
+  redirectUrl.hash = "";
+
+  const github = await secret('GITHUB_OAUTH');
+
+  const opts = {
+    client_id: github.client_id,
+    redirect_uri: redirectUrl.toString(),
+    scope: 'read:user user:email',
+    state: returnUrl.toString(),
+  };
+
+  res.writeHead(302, {Location: `${process.env.GITHUB_LOGIN_URL}?${qs.stringify(opts)}`});
+  res.end();
+});
+
+Router.get('/github/verify', async (req, res) => {
+  const code = req.query.code;
+  const returnUrl = new URL(req.query.state);
+
+  if(code) {
+    const redirectUrl = new URL(returnUrl.toString());
+    redirectUrl.pathname = req.baseUrl + req.path;
+    redirectUrl.hash = "";
+
+    const github = await secret('GITHUB_OAUTH');
+    const payload = {
+      client_id: github.client_id,
+      client_secret: github.client_secret,
+      code: code,
+      redirect_uri: redirectUrl.toString(),
+      state: req.query.state,
+    };
+
+    const auth = await post(
+      process.env.GITHUB_TOKEN_URL,
+      qs.stringify(payload),
+      { 'Content-Type': 'application/x-www-form-urlencoded', 'Accept': 'application/json' }
+    );
+
+    console.log("Debug", access);
+    const info = await get(process.env.GITHUB_INFO_URL, {}, {
+      'Authorization': `token ${auth.access_token}` 
+    });
+    console.log("Debug", info);
+
+    const userData = {
+      github_id: info.id,
+      name: info.name,
+      email: info.email,
+      picture: info.avatar_url,
     };
 
     const id = await saveUser(userData);
