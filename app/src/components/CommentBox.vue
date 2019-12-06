@@ -14,6 +14,7 @@
       v-on:focusin="focusin($event)"
       v-on:focus="focus($event)"
       v-on:blur="blur($event)"
+      v-bind:disabled="posting"
     ></textarea>
 
     <button
@@ -21,8 +22,9 @@
       v-on:click="submit($event)"
       v-on:mousedown.prevent
       v-on:touchstart.prevent
-      v-bind:disabled="!message.trim()">
-      <fa icon="paper-plane"/>
+      v-bind:disabled="!message.trim() || posting">
+      <fa icon="circle-notch" spin v-if="posting"/>
+      <fa icon="paper-plane" v-else/>
     </button>
 
     <modal class="small" v-if="login" v-on:close="login = false">
@@ -57,6 +59,7 @@ export default {
       message: '',
       focused: false,
       login: false,
+      posting: false,
     }
   },
   components: {
@@ -94,6 +97,7 @@ export default {
       this.focused = false;
     },
     async submit(e) {
+      this.posting = true;
       this.trim();
       const response = await fetch(`/comments/${this.post}`, {
         method: 'POST',
@@ -110,6 +114,7 @@ export default {
       this.$refs.input.blur();
 
       this.$emit('post', await response.json());
+      this.posting = false;
     },
     trim() {
       this.message = this.message

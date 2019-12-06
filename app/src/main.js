@@ -9,7 +9,8 @@ import {
   faBars,
   faTimes,
   faTimesCircle,
-  faPaperPlane
+  faPaperPlane,
+  faCircleNotch,
 } from '@fortawesome/free-solid-svg-icons'
 import {
   faGoogle,
@@ -23,6 +24,7 @@ library.add(
   faTimes,
   faTimesCircle,
   faPaperPlane,
+  faCircleNotch,
   faGoogle,
   faFacebook
 );

@@ -2,6 +2,11 @@
   <div class="comment-section">
     <h2> Discussion </h2>
 
+    <div class="loading" v-if="!ready">
+      <fa icon="circle-notch" spin/>
+      Loading comments...
+    </div>
+
     <div class="comment" v-bind:key="index" v-for="(comment, index) in comments">
       <div class="author">
         <user v-bind:user='{ name: comment.name, picture: comment.picture }'/>
@@ -81,6 +86,15 @@ h2 {
   border-top: 1px solid #ddd;
   margin: 40px 0;
   padding: 40px 0;
+
+  .loading {
+    color: #ddd;
+    .fa-spin {
+      font-size: 24px;
+      margin: 0 8px 0 40px;
+    }
+    padding: 20px 0;
+  }
 
   .comment {
     margin-bottom: 40px;

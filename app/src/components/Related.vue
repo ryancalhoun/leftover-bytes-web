@@ -1,11 +1,11 @@
 <template>
-  <div class="related" v-if="tags.length > 0">
+  <div class="related" v-if="realTags.length > 0">
 
     <p> Read more related to... </p>
 
     <router-link
       v-bind:to="url(related.tag)"
-      v-for="related in tags"
+      v-for="related in realTags"
       v-bind:key="related.tag.id"> #{{ related.tag.slug }}
     </router-link>
   </div>
@@ -14,6 +14,11 @@
 <script>
 export default {
   props: ['tags'],
+  computed: {
+    realTags: function() {
+      return this.tags.filter(x => x.tag.slug);
+    }
+  },
   methods: {
     url(tag) {
       return `/topics/${tag.slug}`;
