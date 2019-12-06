@@ -58,7 +58,7 @@ class Comments {
   }
 
   async notify(user, message) {
-    const [entity] = await ds.get(ds.key(['Secret', 'MAILGUN_API']));
+    const [entity] = await this.ds.get(this.ds.key(['Secret', 'MAILGUN_API']));
 
     const opts = {
       auth: `${entity.client_id}:${entity.client_secret}`,
