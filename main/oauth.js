@@ -49,10 +49,8 @@ const readJson = (cb) => {
 };
 
 const get = async (url, params) => {
-  console.log("GET", url, params);
   return new Promise((resolve, reject) => {
-    console.log("GET", `${url}?{qs.stringify(params)}`);
-    const call = https.get(`${url}?{qs.stringify(params)}`, readJson(resolve));
+    const call = https.get(`${url}?${qs.stringify(params)}`, readJson(resolve));
     call.on('error', error => {
       console.log(`Client error on GET ${url}: ${error}`);
       reject(error);
