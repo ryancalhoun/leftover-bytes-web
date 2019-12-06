@@ -4,6 +4,12 @@ const https = require('https');
 const jwtDecode = require('jwt-decode');
 const {Datastore} = require('@google-cloud/datastore');
 
+const secret = async (name) {
+  const ds = new Datastore({ projectId: 'leftoverbytes' });
+  const [entity] = await ds.get(ds.key(['Secret', name]));
+  return entity;
+}
+
 const saveUser = async (data) => {
   const ds = new Datastore({ projectId: 'leftoverbytes' });
 
@@ -42,6 +48,36 @@ const readJson = (cb) => {
   };
 };
 
+const get = async (url, params) => {
+  return new Promise((resolve, reject) => {
+    const call = https.get(`${url}?{qs.stringify(params)}`, readJson(resolve));
+    call.on('error', error => {
+      console.log(`Client error on GET ${url}: ${error}`);
+      reject(error);
+    });
+  });
+};
+
+const post = async (url, body, headers) => {
+  const postUrl = new URL(url);
+  const opts = {
+    hostname: postUrl.hostname,
+    port: postUrl.port || (postUrl.protocol == 'https:' ? 443 : 80),
+    path: postUrl.pathname,
+    method: 'POST',
+    headers: headers,
+  };
+  return new Promise((resolve, reject) => {
+    const call = https.request(opts, readJson(resolve));
+    call.on('error', error => {
+      console.log(`Client error on GET ${url}: ${error}`);
+      reject(error);
+    });
+    call.write(body);
+    call.end();
+  });
+};
+
 Router.get('/user/:id', async (req, res) => {
   const ds = new Datastore({ projectId: 'leftoverbytes' });
   const [entity] = await ds.get(ds.key(['User', req.params.id]));
@@ -49,14 +85,16 @@ Router.get('/user/:id', async (req, res) => {
   res.end();
 });
 
-Router.get('/google', (req, res) => {
+Router.get('/google', async (req, res) => {
   const returnUrl = new URL(req.query.returnUrl);
   const redirectUrl = new URL(returnUrl.toString());
   redirectUrl.pathname = req.baseUrl + req.path + '/verify';
   redirectUrl.hash = "";
 
+  const google = await secret('GOOGLE_OAUTH');
+
   const opts = {
-    client_id: '403632071908-7v9k2mk0cdbqpg698hd1rsklt86rd4k8.apps.googleusercontent.com',
+    client_id: google.client_id,
     nonce: "" + Math.random(),
     response_type: 'code',
     redirect_uri: redirectUrl.toString(),
@@ -65,11 +103,11 @@ Router.get('/google', (req, res) => {
     prompt: 'select_account',
   };
 
-  res.writeHead(302, {Location: `https://accounts.google.com/o/oauth2/v2/auth?${qs.stringify(opts)}`});
+  res.writeHead(302, {Location: `${process.env.GOOGLE_LOGIN_URL}?${qs.stringify(opts)}`});
   res.end();
 });
 
-Router.get('/google/verify', (req, res) => {
+Router.get('/google/verify', async (req, res) => {
   const code = req.query.code;
   const returnUrl = new URL(req.query.state);
 
@@ -78,60 +116,52 @@ Router.get('/google/verify', (req, res) => {
     redirectUrl.pathname = req.baseUrl + req.path;
     redirectUrl.hash = "";
 
+    const google = await secret('GOOGLE_OAUTH');
     const payload = {
-      client_id: '403632071908-7v9k2mk0cdbqpg698hd1rsklt86rd4k8.apps.googleusercontent.com',
-      client_secret: 'NffUEV1tF66e79vPrR9aPt3F',
+      client_id: google.client_id,
+      client_secret: google.client_secret,
       code: code,
       redirect_uri: redirectUrl.toString(),
       grant_type: 'authorization_code',
     };
 
-    const opts = {
-      hostname: 'oauth2.googleapis.com',
-      port: 443,
-      path: '/token',
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      }
-    };
+    const data = await post(
+      process.env.GOOGLE_TOKEN_URL,
+      qs.stringify(payload),
+      { 'Content-Type': 'application/x-www-form-urlencoded' }
+    );
 
-    const onExchange = async (data) => {
-      const userData = jwtDecode(data.id_token);
+    const userData = jwtDecode(data.id_token);
 
-      const id = await saveUser(userData);
-      res.cookie('user_id', id, { maxAge: 30*24*3600*1000 });
-      res.writeHead(302, {Location: returnUrl.toString()});
-      res.end();
-    };
-
-    const exchange = https.request(opts, readJson(onExchange));
-    exchange.write(qs.stringify(payload));
-    exchange.end();
+    const id = await saveUser(userData);
+    res.cookie('user_id', id, { maxAge: 30*24*3600*1000 });
+    res.writeHead(302, {Location: returnUrl.toString()});
+    res.end();
   } else {
 
   }
 });
 
-Router.get('/facebook', (req, res) => {
+Router.get('/facebook', async (req, res) => {
   const returnUrl = new URL(req.query.returnUrl);
   const redirectUrl = new URL(returnUrl.toString());
   redirectUrl.pathname = req.baseUrl + req.path + '/verify';
   redirectUrl.hash = "";
 
+  const facebook = await secret('FACEBOOK_OAUTH');
   const opts = {
-    client_id: '735455096936712',
+    client_id: facebook.client_id,
     response_type: 'code',
     redirect_uri: redirectUrl.toString(),
     scope: 'email',
     state: returnUrl.toString(),
   };
 
-  res.writeHead(302, {Location: `https://www.facebook.com/v5.0/dialog/oauth?${qs.stringify(opts)}`});
+  res.writeHead(302, {Location: `${process.env.FACEBOOK_LOGIN_URL}?${qs.stringify(opts)}`});
   res.end();
 });
 
-Router.get('/facebook/verify', (req, res) => {
+Router.get('/facebook/verify', async (req, res) => {
   const code = req.query.code;
   const returnUrl = new URL(req.query.state);
 
@@ -140,39 +170,35 @@ Router.get('/facebook/verify', (req, res) => {
     redirectUrl.pathname = req.baseUrl + req.path;
     redirectUrl.hash = "";
 
-    const params = {
-      client_id: '735455096936712',
-      client_secret: '7d82a60712a4db1d42f1cce6a5a659b8',
+    const facebook = await secret('FACEBOOK_OAUTH');
+
+    const auth = await get(process.env.FACEBOOK_TOKEN_URL, {
+      client_id: facebook.client_id,
+      client_secret: facebook.client_secret,
       code: code,
       redirect_uri: redirectUrl.toString(),
-    };
+    });
+
+    const info = await get(process.env.FACEBOOK_INFO_URL, {
+      access_token: auth.access_token,
+      fields: 'name,email,picture'
+    });
 
     const dig = (obj, ...keys) => {
       keys.forEach(key => obj = obj && obj[key]);
       return obj;
     };
-    const onInfo = async (data) => {
-      const userData = {
-        facebook_id: data.id,
-        name: data.name,
-        email: data.email,
-        picture: dig(data.picture, 'data', 'url'),
-      };
-      const id = await saveUser(userData);
-      res.cookie('user_id', id, { maxAge: 30*24*3600*1000 });
-      res.writeHead(302, {Location: returnUrl.toString()});
-      res.end();
+    const userData = {
+      facebook_id: info.id,
+      name: info.name,
+      email: info.email,
+      picture: dig(info.picture, 'data', 'url'),
     };
 
-    const onExchange = async (data) => {
-      const params = {
-        access_token: data.access_token,
-        fields: 'name,email,picture'
-      };
-      https.get(`https://graph.facebook.com/me?${qs.stringify(params)}`, readJson(onInfo));
-    };
-
-    https.get(`https://graph.facebook.com/v5.0/oauth/access_token?${qs.stringify(params)}`, readJson(onExchange));
+    const id = await saveUser(userData);
+    res.cookie('user_id', id, { maxAge: 30*24*3600*1000 });
+    res.writeHead(302, {Location: returnUrl.toString()});
+    res.end();
   } else {
 
   }

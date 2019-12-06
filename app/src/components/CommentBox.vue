@@ -60,6 +60,7 @@ export default {
       focused: false,
       login: false,
       posting: false,
+      redirecting: false,
     }
   },
   components: {

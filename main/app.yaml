@@ -18,3 +18,8 @@ handlers:
   script: auto
 env_variables:
   STORAGE_BUCKET: leftoverbytes.appspot.com
+  GOOGLE_LOGIN_URL: https://accounts.google.com/o/oauth2/v2/auth
+  GOOGLE_TOKEN_URL: https://oauth2.googleapis.com/token
+  FACEBOOK_LOGIN_URL: https://www.facebook.com/v5.0/dialog/oauth
+  FACEBOOK_TOKEN_URL: https://graph.facebook.com/v5.0/oauth/access_token
+  FACEBOOK_INFO_URL: https://graph.facebook.com/me
