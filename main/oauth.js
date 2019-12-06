@@ -51,6 +51,7 @@ const readJson = (cb) => {
     let body = '';
     res.on('data', (chunk) => body += chunk);
     res.on('end', () => {
+      console.log(`Is this JSON? ${body}`);
       cb(JSON.parse(body));
     });
   };
@@ -58,6 +59,7 @@ const readJson = (cb) => {
 
 const get = async (url, params, headers) => {
   return new Promise((resolve, reject) => {
+    console.log(`Call ${url} with headers ${headers}`);
     const call = https.get(`${url}?${qs.stringify(params)}`, { headers: headers || {} }, readJson(resolve));
     call.on('error', error => {
       console.log(`Client error on GET ${url}: ${error}`);
