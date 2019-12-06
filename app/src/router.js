@@ -53,7 +53,7 @@ export default new Router({
       component: Post
     },
     {
-      path: '/posts/:id/:uid',
+      path: '/posts/:id/:uid?',
       name: 'post-by-id',
       component: Post
     },

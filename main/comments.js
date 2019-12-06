@@ -91,9 +91,8 @@ class Comments {
           margin: 0;
           padding: 12px 16px;
           font-size: 20px;
-          background: #444;
+          background: #af4213;
           color: white;
-          border-bottom: 6px solid #559944;
         }
         h2 {
           margin: 0;
@@ -106,11 +105,20 @@ class Comments {
           font-size: 14px;
           clear: both;
         }
+        a {
+          color: #af4213;
+        }
+        blockquote {
+          border-left: 1px solid #ddd;
+        }
         </style>
         <body>
         <h1>Leftover Bytes</h1>
         <h2>New comment from ${user.name}</h2>
+        <p><a href="https://leftoverbytes.com/posts/${this.post}"> Go to post </a></p>
+        <blockquote>
         ${ message.split('\n').map(line => "<p>" + line + "</p>") }
+        </blockquote>
         </body>
         </html>
       `,
