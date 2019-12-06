@@ -172,20 +172,17 @@ Router.get('/facebook/verify', async (req, res) => {
 
     const facebook = await secret('FACEBOOK_OAUTH');
 
-    console.log("Debug", code);
     const auth = await get(process.env.FACEBOOK_TOKEN_URL, {
       client_id: facebook.client_id,
       client_secret: facebook.client_secret,
       code: code,
       redirect_uri: redirectUrl.toString(),
     });
-    console.log("Debug", auth);
 
     const info = await get(process.env.FACEBOOK_INFO_URL, {
       access_token: auth.access_token,
       fields: 'name,email,picture'
     });
-    console.log("Debug", info);
 
     const dig = (obj, ...keys) => {
       keys.forEach(key => obj = obj && obj[key]);
@@ -197,7 +194,6 @@ Router.get('/facebook/verify', async (req, res) => {
       email: info.email,
       picture: dig(info.picture, 'data', 'url'),
     };
-    console.log("Debug", userData);
 
     const id = await saveUser(userData);
     res.cookie('user_id', id, { maxAge: 30*24*3600*1000 });
