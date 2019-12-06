@@ -47,12 +47,10 @@ const saveUser = async (data) => {
 };
 
 const readJson = (cb) => {
-  console.log("READ JSON!");
   return (res) => {
     let body = '';
     res.on('data', (chunk) => body += chunk);
     res.on('end', () => {
-      console.log(`Is this JSON? ${body}`);
       cb(JSON.parse(body));
     });
   };
@@ -60,10 +58,9 @@ const readJson = (cb) => {
 
 const get = async (url, params, headers) => {
   return new Promise((resolve, reject) => {
-    console.log(`Call ${url} with headers ${headers}`);
     const call = https.get(`${url}?${qs.stringify(params)}`, { headers: headers || {} }, readJson(resolve));
     call.on('error', error => {
-      console.log(`Client error on GET ${url}: ${error}`);
+      console.error(`Client error on GET ${url}: ${error}`);
       reject(error);
     });
   });
@@ -79,10 +76,9 @@ const post = async (url, body, headers) => {
     headers: headers,
   };
   return new Promise((resolve, reject) => {
-    console.log(`POST ${url} with headers ${headers}`);
     const call = https.request(opts, readJson(resolve));
     call.on('error', error => {
-      console.log(`Client error on GET ${url}: ${error}`);
+      console.error(`Client error on GET ${url}: ${error}`);
       reject(error);
     });
     call.write(body);
@@ -245,6 +241,7 @@ Router.get('/github/verify', async (req, res) => {
     redirectUrl.hash = "";
 
     const github = await secret('GITHUB_OAUTH');
+
     const payload = {
       client_id: github.client_id,
       client_secret: github.client_secret,
@@ -259,11 +256,10 @@ Router.get('/github/verify', async (req, res) => {
       { 'Content-Type': 'application/x-www-form-urlencoded', 'Accept': 'application/json' }
     );
 
-    console.log("Debug", auth);
     const info = await get(process.env.GITHUB_INFO_URL, {}, {
-      'Authorization': `token ${auth.access_token}` 
+      'Authorization': `token ${auth.access_token}`,
+      'User-Agent': 'nodejs'
     });
-    console.log("Debug", info);
 
     const userData = {
       github_id: info.id,
