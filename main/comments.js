@@ -1,4 +1,5 @@
 const Router = require('express').Router();
+const qs = require('querystring');
 const {Datastore} = require('@google-cloud/datastore');
 
 class Comments {
@@ -47,11 +48,82 @@ class Comments {
     const [r] = await this.ds.save({ key: key, data: data });
     const id = r.mutationResults[0].key.path[0].id;
 
+    this.notify(user, message);
+
     return Object.assign({ id: id }, data);
   }
   async update(id, message) {
   }
   async delete(id) {
+  }
+
+  async notify(user, message) {
+    const [entity] = await ds.get(ds.key(['Secret', 'MAILGUN_API']));
+
+    const opts = {
+      auth: `${entity.client_id}:${entity.client_secret}`,
+      hostname: 'api.mailgun.net',
+      port: 443,
+      path: '/v3/mg.leftoverbytes.com/messages',
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    };
+
+    const params = {
+      to: process.env.NOTIFY_RECIPIENT,
+      from: process.env.NOTIFY_SENDER,
+      subject: 'New comment on Leftover Bytes',
+      html: `
+        <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+        <html xmlns="http://www.w3.org/1999/xhtml">
+        <head>
+        <title>Leftover Bytes</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0 " />
+        <style>
+        html, body {
+          margin: 0;
+          font-family: sans;
+        }
+        h1 {
+          margin: 0;
+          padding: 12px 16px;
+          font-size: 20px;
+          background: #444;
+          color: white;
+          border-bottom: 6px solid #559944;
+        }
+        h2 {
+          margin: 0;
+          padding: 20px 16px;
+          font-size: 16px;
+        }
+        p {
+          margin: 0;
+          padding: 8px 16px;
+          font-size: 14px;
+          clear: both;
+        }
+        </style>
+        <body>
+        <h1>Leftover Bytes</h1>
+        <h2>New comment from ${user.name}</h2>
+        ${ message.split('\n').map(line => "<p>" + line + "</p>") }
+        </body>
+        </html>
+      `,
+    };
+
+    return new Promise((resolve, reject) => {
+      const call = https.request(opts, resolve);
+      call.on('error', error => {
+        console.log(`Mailgun error: ${error}`);
+        reject(error);
+      });
+      call.write(qs.stringify(params));
+      call.end();
+    });
   }
 }
 
