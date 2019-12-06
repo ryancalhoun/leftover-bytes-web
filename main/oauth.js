@@ -23,7 +23,7 @@ const saveUser = async (data) => {
     }
   })();
 
-  const query = ds.createQuery('User').filter(filterKey, data[filterKey]).limit(1) :
+  const query = ds.createQuery('User').filter(filterKey, data[filterKey]).limit(1);
   const [entities, moreResults] = await ds.runQuery(query);
 
   let keyName;
