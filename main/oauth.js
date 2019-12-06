@@ -4,7 +4,7 @@ const https = require('https');
 const jwtDecode = require('jwt-decode');
 const {Datastore} = require('@google-cloud/datastore');
 
-const secret = async (name) {
+const secret = async (name) => {
   const ds = new Datastore({ projectId: 'leftoverbytes' });
   const [entity] = await ds.get(ds.key(['Secret', name]));
   return entity;
