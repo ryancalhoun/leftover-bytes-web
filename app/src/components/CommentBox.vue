@@ -39,6 +39,10 @@
         <fa v-bind:icon='["fab", "facebook"]'/> Connect with Facebook
       </button>
 
+      <button class="connect github" v-on:click="github()">
+        <fa v-bind:icon='["fab", "github"]'/> Connect with Github
+      </button>
+
       <p> <i>
         By signing up, you agree to our
         <router-link to="/privacy/" target="_blank">Privacy Policy</router-link>.
@@ -130,6 +134,11 @@ export default {
       returnUrl.hash = "comment";
       window.location = `/oauth/google?returnUrl=${encodeURIComponent(returnUrl.toString())}`;
     },
+    github() {
+      const returnUrl = new URL(window.location.href);
+      returnUrl.hash = "comment";
+      window.location = `/oauth/github?returnUrl=${encodeURIComponent(returnUrl.toString())}`;
+    },
     facebook() {
       const returnUrl = new URL(window.location.href);
       returnUrl.hash = "comment";
@@ -182,6 +191,9 @@ export default {
     }
     &.google {
       background: #4285F4;
+    }
+    &.github {
+      background: #24292e;
     }
     &.facebook {
       background: #4267B2;

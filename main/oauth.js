@@ -255,7 +255,7 @@ Router.get('/github/verify', async (req, res) => {
       { 'Content-Type': 'application/x-www-form-urlencoded', 'Accept': 'application/json' }
     );
 
-    console.log("Debug", access);
+    console.log("Debug", auth);
     const info = await get(process.env.GITHUB_INFO_URL, {}, {
       'Authorization': `token ${auth.access_token}` 
     });

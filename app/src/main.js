@@ -14,6 +14,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import {
   faGoogle,
+  faGithub,
   faFacebook,
 } from '@fortawesome/free-brands-svg-icons'
 
@@ -26,6 +27,7 @@ library.add(
   faPaperPlane,
   faCircleNotch,
   faGoogle,
+  faGithub,
   faFacebook
 );
 
