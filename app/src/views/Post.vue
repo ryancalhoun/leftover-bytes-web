@@ -115,6 +115,10 @@ export default {
           padding: 20px 40px;
         }
       }
+      iframe {
+        display: block;
+        margin: 0 auto;
+      }
     }
   }
 

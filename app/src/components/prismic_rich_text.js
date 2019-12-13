@@ -30,6 +30,17 @@ class PrismicRichText {
     const list = (type, obj) => {
       return h(type, obj.items.map(it => richText('li', it)));
     };
+    const embed = (type, obj) => {
+      const data = {};
+
+      for(const key in obj.oembed) {
+        if(key != 'html') {
+          data[`data-${key.replace('_', '-')}`] = obj.oembed[key];
+        }
+      }
+
+      return h(type, {attrs: data, domProps: {innerHTML: obj.oembed.html}});
+    };
 
     const types = {
       heading1:      { e: 'h1',  r: richText },
@@ -41,6 +52,7 @@ class PrismicRichText {
       paragraph:     { e: 'p',   r: richText },
       preformatted:  { e: 'pre', r: richText },
       image:         { e: 'img', r: image },
+      embed:         { e: 'div', r: embed },
       'list-item':   { e: 'ul',  r: list },
       'o-list-item': { e: 'ol',  r: list },
     };
