@@ -83,7 +83,7 @@ class MediumImport {
     const clientIp = (this.req.header('X-Forwarded-For') || '').split(',').shift();
     return new Promise((resolve, reject) => {
       dns.reverse(clientIp, (e, hostnames) => {
-        if(hostnames.filter(h => h.match(/embed.ly|amazonaws.com/)).length > 0) {
+        if(hostnames && hostnames.filter(h => h.match(/embed.ly|amazonaws.com/)).length > 0) {
           this.getDocument().then((page) => {
             this.render(res, page);
             resolve();

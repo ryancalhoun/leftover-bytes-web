@@ -5,10 +5,10 @@
 </template>
 
 <script>
-const Prismic = require('prismic-javascript');
+import Prismic from 'prismic-javascript';
 
 const baseurl = 'https://leftoverbytes.cdn.prismic.io/api/v2';
-let api = Prismic.getApi(baseurl);
+const api = Prismic.getApi(baseurl);
 
 export default {
   name: 'DocumentPane',
@@ -40,7 +40,7 @@ export default {
     }
   },
   methods: {
-    load(to, from) {
+    async load(to, from) {
       const q = [];
       const opts = {};
 
@@ -69,13 +69,11 @@ export default {
       if(this.month) 
         q.push(Prismic.Predicates.month('document.first_publication_date', parseInt(this.month)));
 
-      api.then(api =>
-        api.query(q, opts).then(response => {
-          this.results = response.results;
-          this.$emit('document-loaded', this.results);
-          this.loaded = true;
-        })
-      );
+      const response = await (await api).query(q, opts);
+
+      this.results = response.results;
+      this.$emit('document-loaded', this.results);
+      this.loaded = true;
     }
   }
 }

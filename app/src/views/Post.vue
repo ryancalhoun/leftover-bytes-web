@@ -94,6 +94,11 @@ export default {
   }
 }
 .body {
+  &::v-deep {
+    a {
+      color: #af4213;
+    }
+  }
   .text {
     &::v-deep {
       img {
@@ -109,9 +114,6 @@ export default {
         @media screen and (min-width: 768px) {
           padding: 20px 40px;
         }
-      }
-      a {
-        color: #af4213;
       }
     }
   }
