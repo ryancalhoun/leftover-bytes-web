@@ -22,6 +22,10 @@ app.get('/sitemap.xml', (req, res) => {
   });
 });
 
+app.get('/charts/index.yaml', (req, res) => {
+  res.redirect(301, `${process.env.CONTENTS}/charts/index.yaml`)
+});
+
 app.use('/comments', CommentsRouter);
 app.use('/oauth', OAuthRouter);
 
