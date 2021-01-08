@@ -18,6 +18,7 @@ handlers:
   script: auto
 env_variables:
   CONTENTS: https://storage.googleapis.com/leftoverbytes-content
+  CHART_SOURCE: https://gitlab.com/leftoverbytes/helm-charts
   STORAGE_BUCKET: leftoverbytes.appspot.com
   GOOGLE_LOGIN_URL: https://accounts.google.com/o/oauth2/v2/auth
   GOOGLE_TOKEN_URL: https://oauth2.googleapis.com/token

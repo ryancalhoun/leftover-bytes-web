@@ -22,6 +22,9 @@ app.get('/sitemap.xml', (req, res) => {
   });
 });
 
+app.get('/charts(/*)?', (req, res) => {
+  res.redirect(301, `${process.env.CHART_SOURCE}/${req.originalUrl}`)
+});
 app.get('/charts/index.yaml', (req, res) => {
   res.redirect(301, `${process.env.CONTENTS}/charts/index.yaml`)
 });
