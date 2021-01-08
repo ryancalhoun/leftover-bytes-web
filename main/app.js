@@ -22,11 +22,11 @@ app.get('/sitemap.xml', (req, res) => {
   });
 });
 
-app.get('/charts(/*)?', (req, res) => {
-  res.redirect(301, `${process.env.CHART_SOURCE}${req.params[0] || ""}`)
-});
 app.get('/charts/index.yaml', (req, res) => {
   res.redirect(301, `${process.env.CONTENTS}/charts/index.yaml`)
+});
+app.get('/charts(/*)?', (req, res) => {
+  res.redirect(301, `${process.env.CHART_SOURCE}`)
 });
 
 app.use('/comments', CommentsRouter);
