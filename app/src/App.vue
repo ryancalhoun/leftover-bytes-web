@@ -2,7 +2,7 @@
   <div id="app">
     <router-view/>
     <footer>
-      &copy; 2019 Ryan Calhoun
+      &copy; 2021 Ryan Calhoun
 
       <ul>
         <li> <router-link to="/privacy/"> Privacy Policy </router-link> </li>
