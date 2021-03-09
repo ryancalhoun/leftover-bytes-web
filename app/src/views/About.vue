@@ -43,6 +43,13 @@ export default {
 
 
 <style scoped lang="scss">
+.body {
+  &::v-deep {
+    a {
+      color: #af4213;
+    }
+  }
+}
 .authors {
   margin-top: 80px;
 }

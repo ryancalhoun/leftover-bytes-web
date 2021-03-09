@@ -10,15 +10,20 @@ export default {
   },
   components: {
     hyperlink: {
-      props: { link_type: String, id: String, uid: String, url: String },
+      props: { link_type: String, type: String, id: String, uid: String, url: String, slug: String },
       render(h) {
         const children = this.$slots.default;
         if(this.link_type == 'Web') {
           const attrs = { href: this.url, target: '_blank', };
           return h('a', {attrs: attrs}, children);
         } else if(this.link_type == 'Document') {
-          const attrs = { to: '/posts/' + this.id + '/' + this.uid, };
-          return h('router-link', {attrs: attrs}, children);
+          if(this.type == 'post') {
+            const attrs = { to: '/posts/' + this.id + '/' + this.uid, };
+            return h('router-link', {attrs: attrs}, children);
+          } else if(this.type == 'tag') {
+            const attrs = { to: '/topics/' + this.slug, };
+            return h('router-link', {attrs: attrs}, children);
+          }
         }
       }
     }
