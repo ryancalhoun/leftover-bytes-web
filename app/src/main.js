@@ -33,8 +33,6 @@ library.add(
 
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-import './registerServiceWorker'
-
 Vue.use(VueCookies)
 Vue.use(VScrollLock)
 Vue.component('fa', FontAwesomeIcon);
