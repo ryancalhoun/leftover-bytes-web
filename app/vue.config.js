@@ -3,11 +3,6 @@ module.exports = {
     ? 'https://storage.googleapis.com/leftoverbytes-content/'
     : '/',
 
-  pwa: {
-    name: 'Leftover Bytes',
-    themeColor: '#af4212',
-  },
-
   devServer: {
     disableHostCheck: true,
     proxy: {

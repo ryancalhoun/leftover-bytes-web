@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build && mv dist/index.html dist/manifest.json dist/service-worker.js ../main",
+    "build": "vue-cli-service build && mv dist/index.html ../main",
     "lint": "vue-cli-service lint",
     "test:unit": "vue-cli-service test:unit"
   },
@@ -22,7 +22,6 @@
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.4.0",
     "@vue/cli-plugin-eslint": "^3.4.0",
-    "@vue/cli-plugin-pwa": "^3.4.0",
     "@vue/cli-plugin-unit-jest": "^3.4.0",
     "@vue/cli-service": "^3.4.0",
     "@vue/test-utils": "^1.0.0-beta.20",
@@ -31,7 +30,7 @@
     "babel-jest": "^23.6.0",
     "eslint": "^5.8.0",
     "eslint-plugin-vue": "^5.0.0",
-    "fibers": "^3.1.1",
+    "fibers": "^5.0.0",
     "sass": "^1.16.0",
     "sass-loader": "^7.1.0",
     "vue-template-compiler": "^2.5.21"

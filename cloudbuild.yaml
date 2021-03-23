@@ -1,19 +1,16 @@
 steps:
-- name: node:10.15.1
+- name: node:14
   entrypoint: npm
   args: ['install']
   dir: app
-- name: node:10.15.1
+- name: node:14
   entrypoint: npm
   args: ['install']
   dir: main
-- name: node:10.15.1
+- name: node:14
   entrypoint: npm
   args: ['run', 'build']
   dir: app
-- name: ubuntu:18.04
-  args: ['./prep-assets.sh']
-  dir: main
 - name: gcr.io/cloud-builders/gsutil
   args: ['-m', 'cp', '-r', '.', 'gs://leftoverbytes-content']
   dir: app/dist
