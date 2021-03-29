@@ -1,5 +1,7 @@
 # app
 
+SPA front-end for leftover bytes.
+
 ## Project setup
 ```
 npm install
