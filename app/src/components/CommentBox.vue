@@ -54,7 +54,6 @@
 <script>
 import Modal from '@/components/Modal.vue';
 import User from '@/components/User.vue';
-import qs from 'querystring';
 
 export default {
   props: ['post', 'user', 'hash'],

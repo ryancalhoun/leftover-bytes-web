@@ -1,7 +1,6 @@
-import Vue from 'vue'
+import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
-import tracking from './google/tracking'
 import VueCookies from 'vue-cookies'
 import VScrollLock from 'v-scroll-lock'
 
@@ -33,19 +32,11 @@ library.add(
 
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-Vue.use(VueCookies)
-Vue.use(VScrollLock)
-Vue.component('fa', FontAwesomeIcon);
+const app = createApp(App);
 
-Vue.config.productionTip = false;
+app.use(VueCookies);
+app.use(VScrollLock);
+app.use(router);
+app.component('fa', FontAwesomeIcon);
 
-new Vue({
-  router,
-  render: (h) => h(App),
-  mounted: () => {
-    tracking.attach();
-    router.afterEach((to, from) => {
-      tracking.update(to.path);
-    });
-  },
-}).$mount('#app')
+app.mount('#app');

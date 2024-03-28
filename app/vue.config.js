@@ -4,7 +4,7 @@ module.exports = {
     : '/',
 
   devServer: {
-    disableHostCheck: true,
+    allowedHosts: "all",
     proxy: {
       '/comments.*': {
         target: 'https://leftoverbytes.appspot.com/',

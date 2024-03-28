@@ -1,5 +1,5 @@
-import Vue from 'vue'
-import Router from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
+
 import Home from './views/Home.vue'
 import About from './views/About.vue'
 import Info from './views/Info.vue'
@@ -9,10 +9,8 @@ import ByTopic from './views/ByTopic.vue'
 import Archive from './views/Archive.vue'
 import Author from './views/Author.vue'
 
-Vue.use(Router)
-
-export default new Router({
-  mode: 'history',
+export default createRouter({
+  history: createWebHistory(process.env.BASE_URL),
   scrollBehavior: (to, from, savedPosition) => {
     if (to.hash) {
       return {selector: to.hash}

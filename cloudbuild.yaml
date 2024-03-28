@@ -1,13 +1,13 @@
 steps:
-- name: node:14
+- name: node:20
   entrypoint: npm
   args: ['install']
   dir: app
-- name: node:14
+- name: node:20
   entrypoint: npm
   args: ['install']
   dir: main
-- name: node:14
+- name: node:20
   entrypoint: npm
   args: ['run', 'build']
   dir: app

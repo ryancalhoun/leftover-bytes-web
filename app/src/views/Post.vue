@@ -10,12 +10,6 @@
       v-bind:fetchLinks="fetchLinks"
       v-on:document-loaded="onLoaded"
       v-slot="doc">
-      <!--ins
-        class="adsbygoogle"
-        data-ad-client="ca-pub-9556333271333976"
-        data-ad-slot="7127866543"
-        data-ad-format="auto"
-        data-full-width-responsive="true"></ins-->
       <div class="title">
         <text-field v-bind:text="doc.results[0].data.title"/>
         <text-field v-bind:text="doc.results[0].data.description"/>
@@ -56,7 +50,7 @@ export default {
   name: 'Post',
   data() {
     return {
-      fetchLinks: ['author.name', 'author.photo'],
+      fetchLinks: ['author.name', 'author.photo', 'tag.name'],
       hash: window.location.hash.substr(1),
     }
   },
@@ -76,11 +70,9 @@ export default {
         const date = new Date(post.first_publication_date.replace("+0000", "Z"));
         const url = "/posts/" + date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + post.uid;
         this.$router.replace(url);
-        tracking.update(url);
 
         window.location.hash = '';
       }
-      //this.$nextTick(() => (window.adsbygoogle || []).push({}));
     }
   }
 }

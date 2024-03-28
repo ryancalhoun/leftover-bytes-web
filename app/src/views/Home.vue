@@ -17,7 +17,7 @@
       </div>
     </div> 
     <div id="content" class="content" ref="content">
-      <nav-header/>
+      <nav-header @menu-home="menuHome"/>
       <document-pane type="home" v-on:document-loaded="onDocumentLoaded" v-bind:fetchLinks="fetchLinks" v-slot="doc">
         <div class="container">
           <div class="body">
@@ -56,12 +56,10 @@ export default {
     PostLink,
     TextField,
   },
-  mounted() {
-    this.$on('menu-home', () => {
-      window.scroll(0, this.$refs.content.offsetTop);
-    });
-  },
   methods: {
+    menuHome() {
+      window.scroll(0, this.$refs.content.offsetTop);
+    },
     onDocumentLoaded(result) {
       this.title = result[0].data.title;
       this.description = result[0].data.description;

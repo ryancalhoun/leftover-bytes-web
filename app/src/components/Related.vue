@@ -6,7 +6,7 @@
     <router-link
       v-bind:to="url(related.tag)"
       v-for="related in realTags"
-      v-bind:key="related.tag.id"> #{{ related.tag.slug }}
+      v-bind:key="related.tag.id"> #{{ related.tag.data.name }}
     </router-link>
   </div>
 </template>
@@ -16,12 +16,12 @@ export default {
   props: ['tags'],
   computed: {
     realTags: function() {
-      return this.tags.filter(x => x.tag.slug);
+      return this.tags.filter(x => x.tag.data.name);
     }
   },
   methods: {
     url(tag) {
-      return `/topics/${tag.slug}`;
+      return `/topics/${tag.data.name}`;
     }
   }
 }
